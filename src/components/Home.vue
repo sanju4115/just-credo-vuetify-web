@@ -1,137 +1,137 @@
 <template>
-  <v-container>
-      <v-layout row>
-          <v-flex xs12 sm6 offset-sm3>
-              <v-card>
-              <v-card-text>
-                  <v-container>
-                      <v-form @submit.prevent="onRegister">
-                          <v-layout row>
-                              <v-flex xs12>
-                                  <v-text-field
-                                    name="email"
-                                    label="Email"
-                                    id="email"
-                                    v-model="email"
-                                    type="email"
-                                    required></v-text-field>
-                                    <v-text-field
-                                    name="password"
-                                    label="Password"
-                                    id="password"
-                                    v-model="password"
-                                    type="password"
-                                    required></v-text-field>
-                                    <v-text-field
-                                    name="confirmPassword"
-                                    label="Confirm Password"
-                                    id="confirmPassword"
-                                    v-model="confirmPassword"
-                                    type="password"
-                                    :rules="[comparePasswords]"></v-text-field>
-                                    <v-btn
-                                        type="submit"
-                                        color="accent"
-                                        :loading="loading"
-                                        :disabled="loading">Register</v-btn>
-                              </v-flex>
-                          </v-layout>
-                      </v-form>
-                  </v-container>
-              </v-card-text>
-              </v-card>
+  <v-card class="ma-1 justify-center" color="primary">
+    <v-jumbotron color="background darken-4">
+      <v-container fill-height>
+        <v-layout align-center>
+          <v-flex white--text>
+            <h3 class="display-3 welcome">Welcome to JustCredo</h3>
+            <span class="overview-content"><p>It is transforming the way end users and educational institute used to interact with each other by creating a
+              digital ecosystem where they can interact with each other directly.</p></span>
+            <v-divider class="my-3"></v-divider>
+            <div class="overview-content"><h2>Next Generation Educational Networking</h2></div>
+            <a href="#Content"><v-btn large color="primary" class="mx-0">Start Experience</v-btn></a>
           </v-flex>
+        </v-layout>
+      </v-container>
+    </v-jumbotron>
+
+    <v-alert color="success" icon="new_releases" :value="true">
+      Browse education places category wise here. Click on tiles to see more.
+    </v-alert>
+
+    <v-container fill-height class="justify-center">
+      <v-layout style="width: 100%" v-if="loading">
+        <v-flex xs12 class="text-xs-center">
+          <v-progress-circular
+            indeterminate
+            class="colorPrimaryText--text"
+            :width="7"
+            :size="70"
+            ></v-progress-circular>
+        </v-flex>
       </v-layout>
- </v-container>  
+      <v-layout id="Content" row wrap class="justify-center text-xs-center">
+        <v-flex sm3 md2 class="ma-3" v-for="category in categories" :key="category.key" >
+          <v-card color="background white--text elevation-10" class="text-xs-center" style="height: 200px;width: 200px;">
+            <img :src="category.image" style="height: 100px;width: 100px; margin-top: 20px">
+            <v-card-title class="justify-center">
+              <div>
+                <span class="truncate">{{category.name}}</span><br>
+              </div>
+            </v-card-title>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    <v-container v-for="category in categories" :key="category.key">
+      <app-category-link :category=category></app-category-link>
+    </v-container>
+    <v-dialog persistent v-model="locationView" width="500px">
+      <app-location-link @closeLocationPopup="locationView = !locationView"></app-location-link>
+    </v-dialog>
+  </v-card>
 </template>
 
 <script>
-import db from './firebaseInit';
-import firebase from 'firebase';
+import db from "./firebaseInit";
+import TopCategoryWise from "./TopCategoryWise";
+import PlaceLocation from "./PlaceLocation";
 export default {
-  data(){
+  name: "home",
+  components: {
+    "app-category-link": TopCategoryWise,
+    "app-location-link": PlaceLocation
+  },
+  data: function() {
     return {
-        loader: null,
-        loading: false,
-        email:"",
-        password:"",
-        confirmPassword:""
-    }
-  },
-    watch: {
-      loader () {
-        const l = this.loader
-        this[l] = !this[l]
-      }
-    },
-  computed: {
-      comparePasswords(){
-          return this.password !== this.confirmPassword ? "Passwords do not match" : true
-      },
-      user(){
-          return this.$store.getters.user;
-      }
-  },
-  watch:{
-      user(value){
-          if(value!==null && value!==undefined){
-              this.$router.push('/');
-          }
-      }
+      loading: true,
+      categories: []
+    };
   },
   methods: {
-      onRegister(e){
-        this.$store.dispatch('registerUser', {email: this.email, password: this.password, loading: this.loading});
-    },
-    login:function(e){
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-      .then(user =>{
-        this.$router.push('/newsfeed');
-      },
-      err =>{
-        alert(err.message);
-      })
+    buildContent() {
+      db
+        .collection("categories")
+        .get()
+        .then(querySnapshot => {
+          this.loading = false;
+          querySnapshot.forEach(doc => {
+            const data = {
+              image: doc.data().image,
+              key: doc.data().key,
+              name: doc.data().name
+            };
+            this.categories.push(data);
+          });
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log("Error getting documents: ", error);
+        });
+    }
+  },
+  computed: {
+    locationView() {
+      const location = this.$store.getters.location;
+      if (location) {
+        this.buildContent();
+      }
+      return !location;
     }
   }
-}
+};
 </script>
 
-<style>
-  .custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
-  }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-</style>
+<style scoped>
+  @import url(http://fonts.googleapis.com/css?family=Roboto:100,300,400,500,600,700);
 
+  .welcome{
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    line-height: 48px;
+    margin-bottom: 2%;
+    font-size: 43px;
+  }
+
+  .overview-content h4 {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .overview-content p {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 21px;
+    letter-spacing: 1px;
+    padding-right: 12%;
+  }
+
+  .truncate {
+  white-space: nowrap;
+  width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: bold;
+}
+</style>

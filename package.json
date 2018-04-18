@@ -12,10 +12,17 @@
   },
   "dependencies": {
     "firebase": "^4.12.1",
+    "firebaseui": "^2.7.0",
+    "js-cookie": "^2.2.0",
+    "latlon-geohash": "^1.1.0",
     "vue": "^2.5.2",
+    "vue-carousel": "^0.6.14",
     "vue-router": "^3.0.1",
+    "vue2-google-maps": "^0.8.12",
     "vuetify": "^1.0.0",
-    "vuex": "^3.0.1"
+    "vuetify-google-autocomplete": "^2.0.0-Alpha.8",
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.5.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
