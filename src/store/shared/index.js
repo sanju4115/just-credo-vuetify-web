@@ -6,7 +6,8 @@ export default {
   state: {
     user: null,
     loading: false,
-    error: null
+    error: null,
+    areaSelected:"geohash50"
   },
   mutations: {
     setUser(state, payload) {
@@ -21,7 +22,7 @@ export default {
             state.user = doc.data();
           }else {
             console.log("User does not exist in db");
-            handleLocationError(false);
+            //handleLocationError(false);
           }
         }).catch(function(error) {
           console.log("Error getting document:", error);
@@ -36,6 +37,9 @@ export default {
     },
     clearError(state) {
       state.error = null;
+    },
+    setAreaSelected(state, payload) {
+      state.areaSelected = payload.area;
     }
   },
   actions: {
@@ -45,6 +49,9 @@ export default {
     logout({ commit }) {
       firebase.auth().signOut();
       commit("setUser", null);
+    },
+    areaChange({ commit, getters }, payload) {
+      commit("setAreaSelected", payload);
     }
   },
   getters: {
@@ -56,6 +63,9 @@ export default {
     },
     loading(state) {
       return state.loading;
+    },
+    areaSelected(state){
+      return state.areaSelected;
     }
   }
 };
@@ -67,5 +77,5 @@ const handleLocationError = (browserHasGeolocation) => {
      please try clearing your settings and try again.`
     : `Your browser doesn't support geolocation.`
   Router.push(`/error?error=${error}`)
-}
+};
 

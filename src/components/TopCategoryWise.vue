@@ -1,11 +1,11 @@
 <template>
   <v-container fluid grid-list-sm class="justify-center">
-    <v-subheader class="white--text" v-if="heading" >Top {{category.name}}</v-subheader>
+    <v-subheader class="colorPrimaryText--text subheading" v-if="heading" >Top {{category.name}}</v-subheader>
     <v-layout style="width: 100%" v-if="loading">
       <v-flex xs12 class="text-xs-center">
         <v-progress-circular
           indeterminate
-          class="colorPrimaryText--text"
+          class="accent--text"
           :width="7"
           :size="70"
         ></v-progress-circular>
@@ -15,14 +15,13 @@
       <v-flex style="cursor: pointer;" sm4 md3 v-for="school in schools" :key="school.key" @click="onClickSchool(school.key)">
         <v-card color="background white--text elevation-24" class="ma-1">
           <v-card-media
-            class="white--text"
             height="125px"
             :src="school.image">
           </v-card-media>
           <v-card-title primary-title>
-            <div class="truncate">
+            <div class="truncate colorPrimaryText--text">
               <span>{{school.name}}</span><br>
-              <span class="primaryText--text truncate">{{school.address}}</span>
+              <span class="colorSecondaryText--text" style="color: black">{{school.address}}</span>
             </div>
           </v-card-title>
         </v-card>

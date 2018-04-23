@@ -11,6 +11,7 @@ import VueCarousel from "vue-carousel";
 import * as VueGoogleMaps from "vue2-google-maps";
 import VuetifyGoogleAutocomplete from "vuetify-google-autocomplete";
 import db from "./components/firebaseInit";
+import colors from 'vuetify/es5/util/colors';
 
 Vue.use(VuetifyGoogleAutocomplete, {});
 Vue.use(VueCarousel);
@@ -22,7 +23,7 @@ Vue.use(VueGoogleMaps, {
   }
 });
 
-Vue.use(Vuetify, {
+/*Vue.use(Vuetify, {
   theme: {
     primary: "#000000",
     secondary: "#212121",
@@ -35,6 +36,23 @@ Vue.use(Vuetify, {
     primaryLight: "#B2DFDB",
     colorPrimaryText: "#FFFFFF",
     colorSecondaryText: "#757575"
+  }
+});*/
+
+Vue.use(Vuetify, {
+  theme: {
+    primary: "#00796b",
+    secondary: "#009688",
+    accent: "#4CAF50",
+    error: "#FF5252",
+    info: "#2196F3",
+    success: "#4CAF50",
+    warning: "#FFC107",
+    background: "#FFFFFF",
+    primaryLight: "#B2DFDB",
+    colorPrimaryText: "#000000",
+    colorSecondaryText: "#757575",
+    secondaryIcon: colors.grey.darken1
   }
 });
 

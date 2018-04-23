@@ -17,6 +17,7 @@
     "latlon-geohash": "^1.1.0",
     "vue": "^2.5.2",
     "vue-carousel": "^0.6.14",
+    "vue-infinite-loading": "^2.3.1",
     "vue-router": "^3.0.1",
     "vue2-google-maps": "^0.8.12",
     "vuetify": "^1.0.0",

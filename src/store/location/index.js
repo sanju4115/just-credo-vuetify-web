@@ -8,7 +8,6 @@ export default {
   },
   mutations: {
     setLocation(state, payload) {
-      console.log(payload);
       state.location = payload;
     },
     clearLocation(state) {
@@ -23,95 +22,110 @@ export default {
   },
   actions: {
     saveLocation({ commit }, payload) {
-      const addressData = { address: payload.addressData };
-      const location = LocationUtil.deduceLocation(payload.placeResultData);
-      location.latitude = addressData.address.latitude;
-      location.longitude = addressData.address.longitude;
-      location.geohash150 = Geohash.encode(
-        addressData.address.latitude,
-        addressData.address.longitude,
-        3
-      );
-      location.geohash50 = Geohash.encode(
-        addressData.address.latitude,
-        addressData.address.longitude,
-        4
-      );
-      location.geohash5 = Geohash.encode(
-        addressData.address.latitude,
-        addressData.address.longitude,
-        5
-      );
-      location.geohash1 = Geohash.encode(
-        addressData.address.latitude,
-        addressData.address.longitude,
-        6
-      );
-      commit("setLocation", location);
-    },
-    fetchUserLocation({ commit }) {
-      commit("setLoading", true);
-      commit("clearLocationError");
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            commit("setLoading", false);
-            const geohash150 = Geohash.encode(
-              position.coords.latitude,
-              position.coords.longitude,
-              3
-            );
-            const geohash50 = Geohash.encode(
-              position.coords.latitude,
-              position.coords.longitude,
-              4
-            );
-            const geohash5 = Geohash.encode(
-              position.coords.latitude,
-              position.coords.longitude,
-              5
-            );
-            const geohash1 = Geohash.encode(
-              position.coords.latitude,
-              position.coords.longitude,
-              6
-            );
-            const geocoder = new google.maps.Geocoder();
-            const latlng = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            geocoder.geocode({ location: latlng }, function(results, status) {
-              if (status === "OK") {
-                if (results[0]) {
-                  console.log(results[0].formatted_address);
-                  console.log(results[0]);
-                  let location = LocationUtil.deduceLocation(results[0]);
-                  location.latitude = position.coords.latitude;
-                  location.longitude = position.coords.longitude;
-                  location.geohash150 = geohash150;
-                  location.geohash50 = geohash50;
-                  location.geohash5 = geohash5;
-                  location.geohash1 = geohash1;
-                  commit("setLocation", location);
-                } else {
-                  commit("setLoading", false);
-                  commit("setLocationError", "No results found");
-                }
-              } else {
-                commit("setLocationError", "Geocoder failed due to: " + status);
-              }
-            });
-          },
-          err => {
-            commit("setLoading", false);
-            commit("setLocationError", err);
-          }
+      return new Promise((resolve, reject) => {
+        const addressData = { address: payload.addressData };
+        const location = LocationUtil.deduceLocation(payload.placeResultData);
+        location.latitude = addressData.address.latitude;
+        location.longitude = addressData.address.longitude;
+        location.geohash150 = Geohash.encode(
+          addressData.address.latitude,
+          addressData.address.longitude,
+          3
         );
-      } else {
-        commit("setLoading", false);
-        commit("setLocationError", "Cannot access location.");
-      }
+        location.geohash50 = Geohash.encode(
+          addressData.address.latitude,
+          addressData.address.longitude,
+          4
+        );
+        location.geohash5 = Geohash.encode(
+          addressData.address.latitude,
+          addressData.address.longitude,
+          5
+        );
+        location.geohash1 = Geohash.encode(
+          addressData.address.latitude,
+          addressData.address.longitude,
+          6
+        );
+        commit("setLocation", location);
+        resolve({data : location});
+        if(!location) {
+          reject({data : "Something went wrong"});
+        }
+        });
+      },
+
+    fetchUserLocation({ commit }) {
+      return new Promise((resolve, reject) => {
+        commit("setLoading", true);
+        commit("clearLocationError");
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              commit("setLoading", false);
+              const geohash150 = Geohash.encode(
+                position.coords.latitude,
+                position.coords.longitude,
+                3
+              );
+              const geohash50 = Geohash.encode(
+                position.coords.latitude,
+                position.coords.longitude,
+                4
+              );
+              const geohash5 = Geohash.encode(
+                position.coords.latitude,
+                position.coords.longitude,
+                5
+              );
+              const geohash1 = Geohash.encode(
+                position.coords.latitude,
+                position.coords.longitude,
+                6
+              );
+              const geocoder = new google.maps.Geocoder();
+              const latlng = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              geocoder.geocode({ location: latlng }, function(results, status) {
+                if (status === "OK") {
+                  if (results[0]) {
+                    console.log(results[0].formatted_address);
+                    console.log(results[0]);
+                    let location = LocationUtil.deduceLocation(results[0]);
+                    location.latitude = position.coords.latitude;
+                    location.longitude = position.coords.longitude;
+                    location.geohash150 = geohash150;
+                    location.geohash50 = geohash50;
+                    location.geohash5 = geohash5;
+                    location.geohash1 = geohash1;
+                    commit("setLocation", location);
+                    resolve({data : location})
+                  } else {
+                    commit("setLoading", false);
+                    commit("setLocationError", "No results found");
+                    reject({data : "No results found"})
+                  }
+                } else {
+                  commit("setLocationError", "Geocoder failed due to: " + status);
+                  reject({data : "Geocoder failed due to: " + status})
+
+                }
+              });
+            },
+            err => {
+              commit("setLoading", false);
+              commit("setLocationError", err);
+              reject({data : err})
+            }
+          );
+        } else {
+          commit("setLoading", false);
+          commit("setLocationError", "Cannot access location.");
+          reject({data : "Cannot access location."})
+        }
+      });
     },
     clearLocationError({ commit }) {
       commit("clearLocationError");

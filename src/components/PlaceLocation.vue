@@ -55,17 +55,24 @@ export default {
   components: { VuetifyGoogleAutocomplete },
   methods: {
     getAddressData: function(addressData, placeResultData) {
-      console.log(addressData, placeResultData);
       this.$store.dispatch("saveLocation", {
         addressData: addressData,
         placeResultData: placeResultData
-      });
+      }).then(response => {
+        this.$emit("locationSaved");
+      }, error => {
+        console.error(error)
+      })
     },
     onClose() {
       this.$emit("closeLocationPopup");
     },
     fetchUserLocation() {
-      this.$store.dispatch("fetchUserLocation");
+      this.$store.dispatch("fetchUserLocation").then(response => {
+        this.$emit("locationSaved");
+      }, error => {
+        console.error(error)
+      });
     },
     onDismissedLocationError() {
       this.$store.dispatch("clearLocationError");

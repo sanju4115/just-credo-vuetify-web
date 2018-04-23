@@ -7,6 +7,7 @@ import Login from "./login";
 import Shared from "./shared";
 import School from "./school";
 import Location from "./location";
+import Review from "./review";
 
 Vue.use(Vuex);
 
@@ -16,7 +17,9 @@ export const store = new Vuex.Store({
     Login: Login,
     Shared: Shared,
     School: School,
-    Location: Location
+    Location: Location,
+    Review: Review
+
   },
   plugins: [createPersistedState()]
 });

@@ -8,7 +8,7 @@ export default {
   },
   mutations: {
     setLoadedReviews(state, payload) {
-      state.loadedReview = state.loadedReview.concat(payload.data);
+      state.loadedReview = state.loadedReview.concat(payload);
     },
     setLoadingReview(state, payload) {
       state.loading = payload;
@@ -21,7 +21,7 @@ export default {
     }
   },
   actions: {
-    storeReviews({ commit, getters }, payload) {
+    storeReviews({ commit }, payload) {
       commit("setLoadingReview", true);
       db
         .collection("reviews")
@@ -31,7 +31,6 @@ export default {
           const reviews = [];
           querySnapshot.forEach(function(doc) {
             reviews.push(doc.data());
-            console.log(doc.id, " => ", doc.data());
           });
           commit("setLoadedReviews", reviews);
           commit("setLoadingReview", false);

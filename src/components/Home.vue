@@ -1,6 +1,6 @@
 <template>
-  <v-card class="ma-1 justify-center" color="primary">
-    <v-jumbotron color="background darken-4">
+  <v-card class="justify-center" color="">
+    <v-jumbotron color="secondary darken-4">
       <v-container fill-height>
         <v-layout align-center>
           <v-flex white--text>
@@ -15,7 +15,7 @@
       </v-container>
     </v-jumbotron>
 
-    <v-alert color="success" icon="new_releases" :value="true">
+    <v-alert color="success" icon="new_releases" :value="true" >
       Browse education places category wise here. Click on tiles to see more.
     </v-alert>
 
@@ -24,7 +24,7 @@
         <v-flex xs12 class="text-xs-center">
           <v-progress-circular
             indeterminate
-            class="colorPrimaryText--text"
+            class="accent--text"
             :width="7"
             :size="70"
             ></v-progress-circular>
@@ -32,7 +32,7 @@
       </v-layout>
       <v-layout id="Content" row wrap class="justify-center text-xs-center">
         <v-flex sm3 md2 class="ma-3" v-for="category in categories" :key="category.key" >
-          <v-card color="background white--text elevation-10" class="text-xs-center" style="height: 200px;width: 200px;">
+          <v-card color="primary white--text elevation-10" class="text-xs-center" style="height: 200px;width: 200px;">
             <img :src="category.image" style="height: 100px;width: 100px; margin-top: 20px">
             <v-card-title class="justify-center">
               <div>
@@ -47,7 +47,10 @@
       <app-category-link :category=category></app-category-link>
     </v-container>
     <v-dialog persistent v-model="locationView" width="500px">
-      <app-location-link @closeLocationPopup="locationView = !locationView"></app-location-link>
+      <app-location-link
+        @closeLocationPopup="locationView = !locationView"
+        @locationSaved="buildContent">
+      </app-location-link>
     </v-dialog>
   </v-card>
 </template>
@@ -65,38 +68,41 @@ export default {
   data: function() {
     return {
       loading: true,
-      categories: []
+      categories: [],
+      locationView:true
     };
   },
   methods: {
     buildContent() {
-      db
-        .collection("categories")
-        .get()
-        .then(querySnapshot => {
-          this.loading = false;
-          querySnapshot.forEach(doc => {
-            const data = {
-              image: doc.data().image,
-              key: doc.data().key,
-              name: doc.data().name
-            };
-            this.categories.push(data);
+      if (this.categories.length ===0) {
+        console.log("categories size "+this.categories.length)
+        db.collection("categories")
+          .get()
+          .then(querySnapshot => {
+            this.loading = false;
+            querySnapshot.forEach(doc => {
+              const data = {
+                image: doc.data().image,
+                key: doc.data().key,
+                name: doc.data().name
+              };
+              this.categories.push(data);
+              this.locationView=false;
+            });
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log("Error getting documents: ", error);
           });
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log("Error getting documents: ", error);
-        });
+      }
     }
   },
-  computed: {
-    locationView() {
-      const location = this.$store.getters.location;
-      if (location) {
-        this.buildContent();
-      }
-      return !location;
+  created: function () {
+    const location = this.$store.getters.location;
+    if (location) {
+      console.log("location called")
+      this.buildContent();
+      this.locationView=false;
     }
   }
 };

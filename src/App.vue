@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-bind:class="{navigationBar:$vuetify.breakpoint.lgAndUp}" class="blue-grey darken-2" dark v-if="userIsAuthenticated" fixed :clipped="$vuetify.breakpoint.lgAndUp" app v-model="drawer">
+    <v-navigation-drawer v-bind:class="{navigationBar:$vuetify.breakpoint.lgAndUp}" class="secondary darken-4" dark v-if="userIsAuthenticated" fixed :clipped="$vuetify.breakpoint.lgAndUp" app v-model="drawer">
       <v-list>
         <template v-for="item in items">
           <v-layout row v-if="item.heading" align-center :key="item.heading">
@@ -60,7 +60,7 @@
       fixed
       extense :style="{'height':height + '%'}">
 
-      <img style="cursor : pointer" @click.stop="drawer = !drawer" src="/static/logo_web.png" width="300px" class="text-xs-center"/>
+      <img style="cursor : pointer" @click.stop="drawer = !drawer" src="/static/logo_tag.png" width="300px" class="text-xs-center"/>
 
       <v-text-field v-if="userIsAuthenticated"
         flat
@@ -78,20 +78,20 @@
       </v-btn>
       <app-profile-menu v-if="userIsAuthenticated"></app-profile-menu>
     </v-toolbar>
-    <v-content class="primary">
+    <v-content>
       <router-view></router-view>
     </v-content>
     <v-dialog v-model="dialog" width="500px">
       <v-tabs
         dark
-        color="background"
+        color="primary"
         show-arrows>
         <v-tabs-slider color="white"></v-tabs-slider>
         <v-tab>Login</v-tab>
         <v-tab>Register</v-tab>
         <v-tabs-items>
           <v-tab-item>
-            <v-card class="background">
+            <v-card class="primary">
               <v-container>
                 <v-layout row v-if="loginError">
                   <v-flex>
@@ -100,7 +100,7 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex>
-                    <v-card class="background white--text elevation-24 ma-2">
+                    <v-card class="secondary white--text elevation-24 ma-2">
                       <v-card-title primary-title>
                       </v-card-title>
                       <v-card-text>
@@ -141,8 +141,8 @@
                                   dark
                                   type="submit"
                                   color="secondary"
-                                  :loading="loading"
-                                  :disabled="loading">
+                                  :loading=loading
+                                  :disabled=loading>
                                   Login
                                   <span slot="loader" class="custom-loader">
                                   <v-icon dark>cached</v-icon>
@@ -158,12 +158,12 @@
                 </v-layout>
               </v-container>
               <v-card-actions>
-                <v-btn color="colorPrimaryText" flat @click.stop="dialog=false">Close</v-btn>
+                <v-btn color="background" flat @click.stop="dialog=false">Close</v-btn>
               </v-card-actions>
             </v-card>
           </v-tab-item>
           <v-tab-item>
-            <v-card class="background">
+            <v-card class="primary">
               <v-container>
                 <v-layout row v-if="error">
                   <v-flex>
@@ -172,7 +172,7 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex>
-                    <v-card class="background white--text elevation-24 ma-2">
+                    <v-card class="secondary white--text elevation-24 ma-2">
                       <v-card-title primary-title>
                         <div class="title">Register Now</div>
                         <div>Educational Networking - Find And Advertise Educational Places Here Location Wise</div>
@@ -218,8 +218,8 @@
                                 <v-btn
                                   color="secondary"
                                   type="submit"
-                                  :loading="loading"
-                                  :disabled="loading">
+                                  :loading=loading
+                                  :disabled=loading>
                                   Register
                                   <span slot="loader" class="custom-loader">
                                   <v-icon light>cached</v-icon>
@@ -235,7 +235,7 @@
                 </v-layout>
               </v-container>
               <v-card-actions>
-                <v-btn color="colorPrimaryText" flat @click.stop="dialog=false">Close</v-btn>
+                <v-btn color="background" flat @click.stop="dialog=false">Close</v-btn>
               </v-card-actions>
             </v-card>
           </v-tab-item>

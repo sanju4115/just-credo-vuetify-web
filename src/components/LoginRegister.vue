@@ -1,27 +1,53 @@
 <template>
-  <v-container class="primary justify-center" fill-height>
+  <v-card class="justify-center" fill-height>
+    <v-jumbotron color="secondary" style="height: 100%">
+      <v-container class="">
+        <v-layout row wrap>
+          <v-flex md5 sm12 style="margin-top: -100px">
+            <v-card dark class="transparent elevation-0">
+              <img class="banner-img img-responsive" src="/static/images/imageedit_1_4646109201.png"/>
+            </v-card>
+          </v-flex>
+          <v-flex md7 sm12 class="featureBox justify-center" style="margin-top: -100px">
+            <v-card dark class="transparent justify-center elevation-0">
+              <div class="banner-text">
+                <h1>Educational Networking - Find And Advertise Educational Places Here<span> Location </span> Wise</h1>
+                <p>JustCredo is an Android Mobile App for digitally advertising all the educational institutes.
+                  People can add their places profile very easily. The new generation Educational Networking app.</p>
+                <div><a href="#"><img src="/static/images/apple-store-btn.png"></a> <a href="#">
+                  <img src="/static/images/google-store-btn.png"></a> </div>
+              </div>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-jumbotron>
     <v-layout row wrap>
-      <v-flex md5 sm12 style="margin-top: -100px">
-        <v-card dark class="transparent">
-          <img class="banner-img img-responsive" src="/static/images/imageedit_1_4646109201.png"/>
-        </v-card>
-      </v-flex>
-      <v-flex md7 sm12 class="featureBox justify-center" style="margin-top: -100px">
-        <v-card dark class="transparent justify-center">
-          <div class="banner-text">
-            <h1>Educational Networking - Find And Advertise Educational Places Here<span> Location </span> Wise</h1>
-            <p>JustCredo is an Android Mobile App for digitally advertising all the educational institutes.
-              People can add their places profile very easily. The new generation Educational Networking app.</p>
-            <div><a href="#"><img src="/static/images/apple-store-btn.png"></a> <a href="#">
-              <img src="/static/images/google-store-btn.png"></a> </div>
-          </div>
-        </v-card>
-      </v-flex>
-      <v-flex md8 offset-md2 class="mt-5">
-        <v-card dark class="transparent" style="margin-top: 100px">
+      <!--<v-container class="primary" style="margin-top: -50px">
+        <v-layout>
+          <v-flex md5 sm12 style="margin-top: -100px">
+            <v-card dark class="transparent">
+              <img class="banner-img img-responsive" src="/static/images/imageedit_1_4646109201.png"/>
+            </v-card>
+          </v-flex>
+          <v-flex md7 sm12 class="featureBox justify-center" style="margin-top: -100px">
+            <v-card dark class="transparent justify-center">
+              <div class="banner-text">
+                <h1>Educational Networking - Find And Advertise Educational Places Here<span> Location </span> Wise</h1>
+                <p>JustCredo is an Android Mobile App for digitally advertising all the educational institutes.
+                  People can add their places profile very easily. The new generation Educational Networking app.</p>
+                <div><a href="#"><img src="/static/images/apple-store-btn.png"></a> <a href="#">
+                  <img src="/static/images/google-store-btn.png"></a> </div>
+              </div>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>-->
+      <v-flex md8 offset-md2>
+        <v-card dark class="transparent elevation-0" style="margin-top: 50px ">
           <div align="center">
-            <h2 class="section-title">Single Point Of Contact For People Related With <br><span>Educational Networking</span> in any way.</h2>
-            <p class="section-intro">JustCredo's mission is to provide a educational networking platform to people
+            <h2 class="section-title colorPrimaryText--text">Single Point Of Contact For People Related With <br><span>Educational Networking</span> in any way.</h2>
+            <p class="section-intro colorPrimaryText--text">JustCredo's mission is to provide a educational networking platform to people
               where they can find any type of educational institute very easily through mobile aplication.
               For educational institutes owner they can create profile on this application and digitally advertise themselves to the world.
             </p>
@@ -29,53 +55,56 @@
         </v-card>
       </v-flex>
       <v-flex md12 xs12 offset-2 class="text-xs-center justify-center">
-        <v-card dark class="transparent">
+        <v-card dark class="transparent elevation-0">
           <div class="overview-video">
             <iframe style="max-width: 100%; max-height: 100%;" src="https://www.youtube.com/embed/Kl7F-SSniSI?autoplay=0" frameborder="0" > </iframe>
           </div>
         </v-card>
       </v-flex>
-      <v-flex md4 sm12 class="mt-5">
-        <v-card dark class="transparent featureBox">
-            <div class="overview-content">
-              <v-icon class="mb-2">rss_feed</v-icon>
-              <h4>Live Feeds And Blogs</h4>
-              <p>Get the live updates of the educational places in your city at every second. You can see rating/reviews shared by people about the educational places
-                and read the blogs shared by the educational places about any event happening within their premises.
-              </p>
-            </div>
-          </div>
-        </v-card>
-      </v-flex>
-      <v-flex md4 sm12 class="mt-5">
-        <v-card dark class="transparent featureBox">
-          <div class="overview-content">
-            <v-icon class="mb-2">speaker_notes</v-icon>
-            <div>
-              <h4>Notifications</h4>
-              <p>You can bookmark places and get notified whenever anything shared by the educational places.
-                Notifications can be about 'Admission Opening'.
-                You can also follow people to get their updates.</p>
-            </div>
-          </div>
-        </v-card>
-      </v-flex>
-      <v-flex md4 sm12 class="mt-5">
-        <v-card dark class="transparent featureBox">
-          <div class="overview-content">
-            <v-icon class="mb-2">location_on</v-icon>
-            <div>
-              <h4>Location Wise Searching</h4>
-              <p>JustCredo shows contents based on the selected location or by fetching user's location automatically.
-              </p>
-            </div>
-          </div>
-        </v-card>
-      </v-flex>
+      <v-container>
+        <v-layout row wrap>
+          <v-flex md4 sm12>
+            <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
+              <div class="overview-content">
+                <v-icon class="mb-2" color="colorPrimaryText">rss_feed</v-icon>
+                <h4>Live Feeds And Blogs</h4>
+                <p>Get the live updates of the educational places in your city at every second. You can see rating/reviews shared by people about the educational places
+                  and read the blogs shared by the educational places about any event happening within their premises.
+                </p>
+              </div>
+            </v-card>
+          </v-flex>
+          <v-flex md4 sm12>
+            <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
+              <div class="overview-content">
+                <v-icon class="mb-2" color="colorPrimaryText">speaker_notes</v-icon>
+                <div>
+                  <h4>Notifications</h4>
+                  <p>You can bookmark places and get notified whenever anything shared by the educational places.
+                    Notifications can be about 'Admission Opening'.
+                    You can also follow people to get their updates.</p>
+                </div>
+              </div>
+            </v-card>
+          </v-flex>
+          <v-flex md4 sm12>
+            <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
+              <div class="overview-content">
+                <v-icon class="mb-2" color="colorPrimaryText">location_on</v-icon>
+                <div>
+                  <h4>Location Wise Searching</h4>
+                  <p>JustCredo shows contents based on the selected location or by fetching user's location automatically.
+                  </p>
+                </div>
+              </div>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
       <v-container class="mt-5 justify-center text-xs-center">
         <v-layout row wrap>
           <v-flex md8 offset-md2 class="mt-5 text-xs-center justify-center">
-            <v-card dark class="transparent featureBox">
+            <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
               <div class="text-center">
                 <h2 class="section-title">For End Users We Offers A Wide Range Of <span>Features</span></h2>
                 <p class="section-intro">It acts as a educational networking and central platform for educational institutes, teachers, students and parents who are linked to education in any way.</p>
@@ -83,7 +112,7 @@
             </v-card>
           </v-flex>
           <v-flex md4 sm12>
-            <v-card dark class="transparent featureBox">
+            <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
               <div class="features1-content left">
                 <v-icon>touch_app</v-icon>
                 <h4>Easy To Use</h4>
@@ -100,12 +129,12 @@
             </v-card>
           </v-flex>
           <v-flex md4 sm12>
-            <v-card dark class="transparent">
+            <v-card dark class="transparent elevation-0">
               <img class="img-responsive" src="/static/images/school_home_mobile.png">
             </v-card>
           </v-flex>
           <v-flex md4 sm12>
-            <v-card dark class="transparent featureBox">
+            <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
               <div class="features1-content right">
                 <v-icon>bookmark</v-icon>
                 <h4>Bookmarking</h4>
@@ -122,14 +151,14 @@
         </v-layout>
       </v-container>
       <v-container class="mt-5">
-        <v-layout row wrap>
+        <v-layout row wrap class="mt-5">
           <v-flex md6 mt-5>
-            <v-card dark class="transparent featureBox">
+            <v-card dark class="transparent featureBox elevation-0">
               <img class="img-responsive" style="max-width: 100%; height: auto;" src="/static/images/school_feature_screen2.png">
             </v-card>
           </v-flex>
           <v-flex md6>
-            <v-card dark class="transparent featureBox" style="float:right;">
+            <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0" style="float:right;">
               <div class="features2-content">
                 <h2 class="section-title">Create your advertising profile very easily by clicking on
                   <span>Add Place</span> in profile section.</h2>
@@ -151,8 +180,8 @@
       </v-container>
       <v-container class="mt-5">
         <v-layout row wrap class="mt-5">
-          <v-flex md6 class="mt-5">
-            <v-card dark class="transparent featureBox">
+          <v-flex md6>
+            <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
               <div class="features2-content">
                 <h2 class="section-title">Education is for improving the lives of others and for leaving your community
                   and world better than you found it.
@@ -167,8 +196,8 @@
               </div>
             </v-card>
           </v-flex>
-          <v-flex>
-            <v-card dark class="transparent featureBox">
+          <v-flex md6>
+            <v-card dark class="transparent featureBox elevation-0">
               <img class="img-responsive" src="/static/images/school_feature_screen4.png">
             </v-card>
           </v-flex>
@@ -177,14 +206,14 @@
       <v-container class="mt-5 justify-center text-xs-center">
         <v-layout row wrap class="mt-5">
           <v-flex md8 offset-md2 class="text-md-center">
-            <v-card dark class="mt-5 transparent featureBox">
+            <v-card dark class="mt-5 transparent featureBox colorPrimaryText--text elevation-0">
               <h2 class="section-title">JustCredo is the <span>next generation</span> educational networking</h2>
               <p class="section-intro">It is transforming the way end users and educational institute used to interact with each other by creating a
                 digital ecosystem where they can interact with each other direclty. </p>
             </v-card>
           </v-flex>
           <v-flex sm12 md12 class="justify-center text-xs-center">
-            <v-card dark class="transparent featureBox">
+            <v-card dark class="transparent featureBox elevation-0">
               <carousel :per-page="4" :autoplay=true :autoplayHoverPause=true
                         paginationActiveColor="#4CAF50"
                         :autoplayTimeout=5000 :minSwipeDistance=8
@@ -198,10 +227,11 @@
           </v-flex>
         </v-layout>
       </v-container>
+      <v-jumbotron color="accent" style="height: 100%">
       <v-container class="text-xs-center justify-center">
         <v-layout row wrap>
           <v-flex md8 offset-md2>
-            <v-card dark class="mt-5 transparent featureBox subscribe">
+            <v-card dark class="mt-5 transparent featureBox subscribe background--text elevation-0">
               <h2>Get Your Free Download Of JustCredo App <span>today!</span></h2>
               <p> The new generation Educational Networking app. </p>
               <div  class="banner-btn"> <a href="#">
@@ -211,8 +241,9 @@
           </v-flex>
         </v-layout>
       </v-container>
+      </v-jumbotron>
     </v-layout>
-  </v-container>
+  </v-card>
 </template>
 
 <script>
@@ -257,7 +288,6 @@ img {
 }
 .subscribe h2 {
   margin-top: 0;
-  color: #fff;
   letter-spacing: 2px;
 }
 
@@ -268,7 +298,6 @@ h2 {
 
 .subscribe p {
   margin: 5% 10% 7% 10%;
-  color: #fff;
   font-size: 14px;
   line-height: 21px;
   font-weight: 300;

@@ -1,7 +1,7 @@
 <template>
-  <v-footer  :clipped="$vuetify.breakpoint.lgAndUp" height="auto">
+  <v-footer :clipped="$vuetify.breakpoint.lgAndUp" height="auto">
     <v-card flat tile width="100%">
-      <v-card-title class="primary white--text">
+      <v-card-title class="secondary white--text">
         <strong class="subheading">Get connected with us on social networks!</strong>
         <v-spacer></v-spacer>
         <v-btn
@@ -14,7 +14,7 @@
           <v-icon size="24px">{{ icon }}</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text class="background white--text">
+      <v-card-text class="primary white--text">
         <v-layout>
           <v-flex
             v-for="(col, i) in rows"
