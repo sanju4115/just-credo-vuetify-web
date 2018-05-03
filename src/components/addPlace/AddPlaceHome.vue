@@ -66,6 +66,7 @@
           ></v-select>
         </v-flex>
       </v-layout>
+
       <!--<v-btn color="primary" @click.stop="location">Submit</v-btn>-->
       <v-container>
         <SchoolForm v-if="selectedType==='School'"></SchoolForm>
