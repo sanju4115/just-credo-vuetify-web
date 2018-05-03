@@ -1,65 +1,69 @@
 <template>
   <v-card class="grey lighten-3">
-    <v-jumbotron color="">
-      <v-container fluid grid-list-md>
-        <v-layout row wrap>
-          <v-flex d-flex xs12 sm6 md4>
-            <v-card color="purple" dark>
-              <v-card-title primary class="title">Lorem</v-card-title>
-              <v-card-text
-                v-text="lorem">
-              </v-card-text>
-            </v-card>
-          </v-flex>
-          <v-flex d-flex xs12 sm6 md3>
-            <v-layout row wrap>
-              <v-flex d-flex>
-                <v-card color="indigo" dark>
-                  <v-card-text
-                    v-text="lorem.slice(0, 70)">
-                  </v-card-text>
-                </v-card>
-              </v-flex>
-              <v-flex d-flex>
-                <v-layout row wrap>
-                  <v-flex
-                    d-flex
-                    v-for="n in 2"
-                    :key="n"
-                    xs12
-                  >
-                    <v-card
-                      color="red lighten-2"
-                      dark
-                    >
-                      <v-card-text
-                        v-text="lorem.slice(0, 40)">
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          <v-flex d-flex xs12 sm6 md2 child-flex>
-            <v-card color="green lighten-2" dark>
-              <v-card-text
-                v-text="lorem.slice(0, 90)">
-              </v-card-text>
-            </v-card>
-          </v-flex>
-          <v-flex d-flex xs12 sm6 md3>
-            <v-card color="blue lighten-2" dark>
-              <v-card-text
-                v-text="lorem.slice(0, 100)">
-              </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-jumbotron>
+    <v-parallax src="/static/images/banners/adding_place_banner.jpg" height="400">
+      <v-layout row wrap justify-end>
+        <v-flex md6 sm12 class="tilled justify-center">
+          <v-layout align-center fill-height>
+            <div style="margin-left: 150px;">
+              <h2>Create your advertising profile
+                <span>here</span></h2>
+              <v-btn color="success" class="mt-3">Start Profile Creation</v-btn>
+            </div>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-parallax>
+
     <v-container>
      <v-layout row wrap>
+       <v-flex xs12>
+         <v-expansion-panel popout row class="mt-1">
+           <v-expansion-panel-content
+             justify-center column
+             hide-actions
+             v-for="(message, i) in messages"
+             :key="i" class="mb-3">
+             <v-layout align-center row spacer slot="header">
+               <v-flex xs4 sm2 md1>
+                 <v-avatar
+                   size="36px"
+                   slot="activator">
+                   <img
+                     src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                     alt=""
+                     v-if="message.avatar">
+                   <v-icon :color="message.color" v-else>{{ message.icon }}</v-icon>
+                 </v-avatar>
+               </v-flex>
+               <v-flex sm5 md3 hidden-xs-only>
+                 <strong v-html="message.name"></strong>
+                 <span class="grey--text" v-if="message.total">&nbsp;({{ message.total }})</span>
+               </v-flex>
+               <v-flex no-wrap xs5 sm3>
+                 <v-chip
+                   label
+                   small
+                   :color="`${message.color} lighten-4`"
+                   class="ml-0"
+                   v-if="message.new">{{ message.new }} new</v-chip>
+                 <strong v-html="message.title"></strong>
+               </v-flex>
+               <v-flex
+                 class="grey--text"
+                 ellipsis
+                 hidden-sm-and-down
+                 v-if="message.excerpt">
+                 &mdash;
+                 {{ message.excerpt }}
+               </v-flex>
+             </v-layout>
+             <v-card>
+               <v-divider></v-divider>
+               <v-card-text v-text="lorem"></v-card-text>
+             </v-card>
+           </v-expansion-panel-content>
+         </v-expansion-panel>
+       </v-flex>
       <v-flex xs12 md8 sm12>
         <v-layout row wrap v-if="reviews" v-for="review in reviews" mb-3>
           <v-card style="width: 100%">
@@ -88,7 +92,8 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex xs12 md4 sm12>
+      <v-flex xs12 md4 sm12 id="sponsored" v-scroll="onScroll" class="pl-3">
+        <Sponsored :category="category"></Sponsored>
       </v-flex>
     </v-layout>
     </v-container>
@@ -96,113 +101,175 @@
 </template>
 
 <script>
-  import InfiniteLoading from 'vue-infinite-loading';
-  import AppUserHeaderLink from "./FeedUserHeader";
-  import db from "../../components/firebaseInit";
-  import FeedSchoolHeader from "./FeedSchoolHeader";
-  import ReviewBody from "./ReviewBody";
-  export default {
-    name: "Feed",
-    components: {
-      ReviewBody,
-      FeedSchoolHeader,
-      AppUserHeaderLink,
-      InfiniteLoading
+import InfiniteLoading from "vue-infinite-loading";
+import AppUserHeaderLink from "./FeedUserHeader";
+import db from "../../components/firebaseInit";
+import FeedSchoolHeader from "./FeedSchoolHeader";
+import ReviewBody from "./ReviewBody";
+import Sponsored from "../place/Sponsored";
+export default {
+  name: "Feed",
+  components: {
+    Sponsored,
+    ReviewBody,
+    FeedSchoolHeader,
+    AppUserHeaderLink,
+    InfiniteLoading
+  },
+  data: () => ({
+    reviews: [],
+    nextQuery: null,
+    LIMIT: 10,
+    areaSelected: null,
+    firstTime: true,
+    sticky:null,
+    sponsored:null,
+    category:{
+      key:"primarySchool",
+      name:"Popular And Sponsored"
     },
-    data: () => ({
-      reviews: [],
-      nextQuery:null,
-      LIMIT:10,
-      areaSelected:null,
-      firstTime:true,
-      lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`
-    }),
-    created:function () {
-      this.areaSelected = this.$store.getters.areaSelected;
-      this.nextQuery=db.collection("reviews")
-        .where("geoHash."+this.areaSelected, "==", this.$store.getters.location[this.areaSelected])
-        .orderBy("timestamp", "desc").limit(this.LIMIT);
-    },
-    methods: {
-      infiniteHandler($state) {
-        this.nextQuery.get()
-          .then(querySnapshot => {
-            const temp = [];
-            querySnapshot.forEach(doc => {
-              temp.push(doc.data());
-            });
-
-            this.reviews = this.reviews.concat(temp);
-            $state.loaded();
-
-            if (this.firstTime) {
-              this.buildEvenListener();
-              this.firstTime = false;
-            }
-
-            console.log(temp.length)
-            if (temp.length < this.LIMIT) {
-              $state.complete();
-            }
-
-            const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
-            console.log("last", lastVisible);
-
-            this.nextQuery = db.collection("reviews")
-              .where("geoHash."+this.areaSelected, "==", this.$store.getters.location[this.areaSelected])
-              .orderBy("timestamp", "desc")
-              .startAfter(lastVisible)
-              .limit(this.LIMIT);
-
-          })
-          .catch(function(error) {
-            console.log("Error getting documents: ", error);
+    messages: [
+      {
+        avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
+        name: "John Leider",
+        title: "Welcome to JustCredo!",
+        excerpt: "Thank you for joining our community..."
+      }
+    ],
+    lorem:
+      "Lorem ipsum dolor sit amet, at aliquam vivendum vel, everti delicatissimi cu eos. Dico iuvaret debitis mel an, et cum zril menandri. Eum in consul legimus accusam. Ea dico abhorreant duo, quo illum minimum incorrupte no, nostro voluptaria sea eu. Suas eligendi ius at, at nemore equidem est. Sed in error hendrerit, in consul constituam cum."
+  }),
+  created: function() {
+    this.areaSelected = this.$store.getters.areaSelected;
+    this.nextQuery = db
+      .collection("reviews")
+      .where(
+        "geoHash." + this.areaSelected,
+        "==",
+        this.$store.getters.location[this.areaSelected]
+      )
+      .orderBy("timestamp", "desc")
+      .limit(this.LIMIT);
+  },
+  methods: {
+    infiniteHandler($state) {
+      this.nextQuery
+        .get()
+        .then(querySnapshot => {
+          const temp = [];
+          querySnapshot.forEach(doc => {
+            temp.push(doc.data());
           });
-      },
-      buildEvenListener(){
-        db.collection("reviews")
-          .where("geoHash."+this.areaSelected, "==", this.$store.getters.location[this.areaSelected])
-          .orderBy("timestamp", "desc").limit(this.LIMIT)
-          .onSnapshot(snapshot => {
-            snapshot.docChanges.forEach(change => {
-              if (change.type === "added") {
-                const reviewExist = this.reviews.find(review => {
-                  return review.id === change.doc.data().id;
-                });
+          this.reviews = this.reviews.concat(temp);
+          $state.loaded();
+          if (this.firstTime) {
+            this.buildEvenListener();
+            this.firstTime = false;
+          }
+          if (temp.length < this.LIMIT) {
+            $state.complete();
+          }
+          const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+          this.nextQuery = db
+            .collection("reviews")
+            .where(
+              "geoHash." + this.areaSelected,
+              "==",
+              this.$store.getters.location[this.areaSelected]
+            )
+            .orderBy("timestamp", "desc")
+            .startAfter(lastVisible)
+            .limit(this.LIMIT);
+        })
+        .catch(function(error) {
+          console.log("Error getting documents: ", error);
+        });
+    },
+    buildEvenListener() {
+      db
+        .collection("reviews")
+        .where(
+          "geoHash." + this.areaSelected,
+          "==",
+          this.$store.getters.location[this.areaSelected]
+        )
+        .orderBy("timestamp", "desc")
+        .limit(this.LIMIT)
+        .onSnapshot(snapshot => {
+          snapshot.docChanges.forEach(change => {
+            if (change.type === "added") {
+              const reviewExist = this.reviews.find(review => {
+                return review.id === change.doc.data().id;
+              });
 
-                if (!reviewExist) {
-                  console.log("New review: ", change.doc.data());
-                  this.reviews.unshift(change.doc.data());
-                }
+              if (!reviewExist) {
+                console.log("New review: ", change.doc.data());
+                this.reviews.unshift(change.doc.data());
               }
-            });
+            }
           });
+        });
+    },
+    onScroll (e) {
+      this.offsetTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (this.offsetTop >= this.sticky) {
+        this.sponsored.classList.add("sticky")
+      } else {
+        this.sponsored.classList.remove("sticky");
       }
     }
-    ,
-    computed:{
-      currentUser(){
-        return this.$store.getters.user;
-      }
+  },
+  mounted() {
+    this.sponsored = document.getElementById("sponsored");
+    this.sticky = this.sponsored.offsetTop;
+  },
+  computed: {
+    currentUser() {
+      return this.$store.getters.user;
     }
   }
+};
 </script>
 
 <style scoped>
-  .container {
-    position: relative;
-    font-family: Arial;
+  .sticky {
+    //position: fixed;
+    justify-content: end;
+    right: 0;
+    top: 0;
   }
 
-  .text-block {
+  .tilled div {
+    font-family: "Gudea", sans-serif;
+  }
+
+  .tilled p {
+    font-family: "Magra", sans-serif;
+  }
+
+  .tilled {
+    position: relative;
+    display: inline-block;
+    padding: 1em 5em 1em 1em;
+    overflow: hidden;
+    color: #fff;
+    margin-right: -30px;
+  }
+
+  .tilled:after {
+    content: '';
     position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background-color: black;
-    color: white;
-    padding-left: 20px;
-    padding-right: 20px;
-    opacity: 0.5;
-    filter: alpha(opacity=50); /* For IE8 and earlier */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    -webkit-transform-origin: 100% 0;
+    -ms-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+    -webkit-transform: skew(15deg);
+    -ms-transform: skew(15deg);
+    transform: skew(15deg);
+    z-index: -1;
   }
 </style>

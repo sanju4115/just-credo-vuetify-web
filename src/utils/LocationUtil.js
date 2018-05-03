@@ -1,3 +1,5 @@
+import Geohash from "latlon-geohash";
+
 export default {
   deduceLocation: function(place) {
     let address = {};
@@ -16,10 +18,45 @@ export default {
             address.administrative_area_level_1 = mergeData.long_name;
           } else if (data === "country") {
             address.country = mergeData.long_name;
+          } else if (data === "postal_code") {
+            address.postal_code = mergeData.long_name;
           }
         });
       });
       return address;
     }
+  },
+  fromLatLongToAddress: function(latitude, longitude) {
+    return new Promise((resolve, reject) => {
+      const geohash150 = Geohash.encode(latitude, longitude, 3);
+      const geohash50 = Geohash.encode(latitude, longitude, 4);
+      const geohash5 = Geohash.encode(latitude, longitude, 5);
+      const geohash1 = Geohash.encode(latitude, longitude, 6);
+      const geocoder = new google.maps.Geocoder();
+      const latlng = {
+        lat: latitude,
+        lng: longitude
+      };
+      geocoder.geocode({location: latlng}, (results, status)=> {
+        if (status === "OK") {
+          if (results[0]) {
+            console.log(results[0].formatted_address);
+            console.log(results[0]);
+            let location = this.deduceLocation(results[0]);
+            location.latitude = latitude;
+            location.longitude = longitude;
+            location.geohash150 = geohash150;
+            location.geohash50 = geohash50;
+            location.geohash5 = geohash5;
+            location.geohash1 = geohash1;
+            resolve({data: location});
+          } else {
+            reject({data: "No results found"});
+          }
+        } else {
+          reject({data: "Geocoder failed due to: " + status});
+        }
+      });
+    });
   }
 };

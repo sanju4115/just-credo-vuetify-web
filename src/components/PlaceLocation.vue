@@ -1,5 +1,5 @@
 <template>
-  <v-card class="background" dark>
+  <v-card class="grey darken-4" dark>
     <v-card-title primary-title>
       <div>
         <h3 class="headline mb-0">Enter Location Where You Want To Explore</h3>
@@ -40,7 +40,7 @@
     </v-container>
     <v-card-actions class="align-content-end justify-end">
       <v-btn v-if="!loading && location"
-        color="background"
+        color="accent"
         @click.stop="onClose">
         Close
       </v-btn>
@@ -54,6 +54,10 @@ export default {
   name: "PlaceLocation",
   components: { VuetifyGoogleAutocomplete },
   methods: {
+    /**
+     * Fetches location by using google's place api
+     * After fetching the location it store location in the store
+     */
     getAddressData: function(addressData, placeResultData) {
       this.$store.dispatch("saveLocation", {
         addressData: addressData,
@@ -67,6 +71,14 @@ export default {
     onClose() {
       this.$emit("closeLocationPopup");
     },
+    /**
+     * Fetches user current location
+     * if user allows browser to fetch location,
+     * if user do not allow browser to fetch location
+     * then it will show error message
+     *
+     * After fetching the location it store location in the store
+     */
     fetchUserLocation() {
       this.$store.dispatch("fetchUserLocation").then(response => {
         this.$emit("locationSaved");

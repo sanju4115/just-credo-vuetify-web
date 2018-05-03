@@ -1,9 +1,25 @@
 <template>
-  <v-card class="justify-center" fill-height>
-    <v-jumbotron color="secondary" style="height: 100%">
-      <v-container class="">
+  <v-card class="justify-center secondary" fill-height>
+    <v-parallax src="/static/images/banners/BE72B9F6A54ACBBC562D5678DCF99C4E.jpg"
+                height="700" style="margin-top: -64px" class=" secondary">
+      <div class="homebanner">
+        <v-layout row wrap fill-height align-center class="pa-5">
+          <v-flex md7 sm12>
+            <v-layout align-center fill-height row wrap class="pa-5">
+              <h3 class="welcome">Welcome to JustCredo</h3>
+              <span><p>We are transforming the way end users and educational institute used to interact with each other by creating a
+              digital ecosystem where they can interact with each other directly.</p></span>
+              <div style="margin-right: 30%"><h2>Next Generation Educational Networking</h2></div><br/>
+              <a href="#Content" style="text-decoration:none"><v-btn large color="accent" class="mx-0">Start Experience</v-btn></a>
+            </v-layout>
+          </v-flex>
+        </v-layout>
+      </div>
+    </v-parallax>
+    <v-layout class="secondary">
+      <v-container>
         <v-layout row wrap>
-          <v-flex md5 sm12 style="margin-top: -100px">
+          <v-flex md5 sm12 style="margin-top: -100px" class="mb-5">
             <v-card dark class="transparent elevation-0">
               <img class="banner-img img-responsive" src="/static/images/imageedit_1_4646109201.png"/>
             </v-card>
@@ -21,30 +37,10 @@
           </v-flex>
         </v-layout>
       </v-container>
-    </v-jumbotron>
-    <v-layout row wrap>
-      <!--<v-container class="primary" style="margin-top: -50px">
-        <v-layout>
-          <v-flex md5 sm12 style="margin-top: -100px">
-            <v-card dark class="transparent">
-              <img class="banner-img img-responsive" src="/static/images/imageedit_1_4646109201.png"/>
-            </v-card>
-          </v-flex>
-          <v-flex md7 sm12 class="featureBox justify-center" style="margin-top: -100px">
-            <v-card dark class="transparent justify-center">
-              <div class="banner-text">
-                <h1>Educational Networking - Find And Advertise Educational Places Here<span> Location </span> Wise</h1>
-                <p>JustCredo is an Android Mobile App for digitally advertising all the educational institutes.
-                  People can add their places profile very easily. The new generation Educational Networking app.</p>
-                <div><a href="#"><img src="/static/images/apple-store-btn.png"></a> <a href="#">
-                  <img src="/static/images/google-store-btn.png"></a> </div>
-              </div>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>-->
-      <v-flex md8 offset-md2>
-        <v-card dark class="transparent elevation-0" style="margin-top: 50px ">
+    </v-layout>
+    <v-layout row wrap class="background">
+      <v-flex md8 offset-md2 class="mt-5">
+        <v-card dark class="transparent elevation-0 mt-5" style="margin-top: 50px ">
           <div align="center">
             <h2 class="section-title colorPrimaryText--text">Single Point Of Contact For People Related With <br><span>Educational Networking</span> in any way.</h2>
             <p class="section-intro colorPrimaryText--text">JustCredo's mission is to provide a educational networking platform to people
@@ -227,8 +223,8 @@
           </v-flex>
         </v-layout>
       </v-container>
-      <v-jumbotron color="accent" style="height: 100%">
-      <v-container class="text-xs-center justify-center">
+      <v-jumbotron color="grey darken-4" style="height: 100%">
+      <v-container class="text-xs-center justify-center mb-5">
         <v-layout row wrap>
           <v-flex md8 offset-md2>
             <v-card dark class="mt-5 transparent featureBox subscribe background--text elevation-0">
@@ -243,6 +239,7 @@
       </v-container>
       </v-jumbotron>
     </v-layout>
+    <v-divider class="grey darken-3" ></v-divider>
   </v-card>
 </template>
 
@@ -270,7 +267,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url(http://fonts.googleapis.com/css?family=Roboto:100,300,400,500,600,700);
 
 img {
@@ -442,4 +439,39 @@ ul li {
   bottom: -100px;
   padding-left: 15%;
 }
+
+  .homebanner{
+    overflow: hidden;
+    position: relative;
+    width:120%;
+    margin-right:-60px;
+    margin-left:-30px;
+    height: 120%;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+.welcome {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  line-height: 48px;
+  margin-bottom: 2%;
+  font-size: 43px;
+}
+
+.homebanner span {
+  letter-spacing: 1px;
+  font-size: 15px;
+  font-weight: 400;
+}
+.homebanner h2 {
+  font-family: "Roboto", sans-serif;
+  line-height: 45px;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+.slanted {
+  clip-path: polygon(0 0, 1600px 0, 1600px 75%, 0 100%);
+}
+
 </style>

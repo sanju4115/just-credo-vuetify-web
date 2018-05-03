@@ -21,6 +21,10 @@ export default {
     }
   },
   actions: {
+    /**
+     * Fetches location by using google's place api
+     * After fetching the location it store location in the store
+     */
     saveLocation({ commit }, payload) {
       return new Promise((resolve, reject) => {
         const addressData = { address: payload.addressData };
@@ -55,6 +59,14 @@ export default {
         });
       },
 
+    /**
+     * Fetches user current location
+     * if user allows browser to fetch location,
+     * if user do not allow browser to fetch location
+     * then it will show error message
+     *
+     * After fetching the location it store location in the store
+     */
     fetchUserLocation({ commit }) {
       return new Promise((resolve, reject) => {
         commit("setLoading", true);
@@ -116,7 +128,7 @@ export default {
             },
             err => {
               commit("setLoading", false);
-              commit("setLocationError", err);
+              commit("setLocationError", err.message);
               reject({data : err})
             }
           );
@@ -129,6 +141,9 @@ export default {
     },
     clearLocationError({ commit }) {
       commit("clearLocationError");
+    },
+    clearLocation({ commit }) {
+      commit("clearLocation");
     }
   },
   getters: {
@@ -140,6 +155,29 @@ export default {
     }
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Cell dimensions at the equatoredit
 // The table below shows the metric dimensions for cells covered by various string lengths of geohash. Cell dimensions vary with latitude and so the table is for the worst-case scenario at the equator.

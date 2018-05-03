@@ -12,9 +12,14 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import VuetifyGoogleAutocomplete from "vuetify-google-autocomplete";
 import db from "./components/firebaseInit";
 import colors from 'vuetify/es5/util/colors';
+import VueSticky from 'vue-sticky'
+import Croppa from 'vue-croppa'
+
+Vue.use(Croppa);
 
 Vue.use(VuetifyGoogleAutocomplete, {});
 Vue.use(VueCarousel);
+Vue.use(VueSticky);
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -52,7 +57,8 @@ Vue.use(Vuetify, {
     primaryLight: "#B2DFDB",
     colorPrimaryText: "#000000",
     colorSecondaryText: "#757575",
-    secondaryIcon: colors.grey.darken1
+    secondaryIcon: colors.grey.darken1,
+    secondaryBackground:"grey lighten-3"
   }
 });
 
@@ -96,8 +102,16 @@ firebase.auth().onAuthStateChanged(user => {
           }).catch(function(error) {
             console.log("Error getting document:", error);
           });
-
           this.$store.dispatch("autoSignIn", user);
+        }else {
+          /**
+           *
+           * User session ended
+           * so clear user and location
+           *
+           */
+          this.$store.dispatch("clearLocation");
+          this.$store.dispatch("clearUser");
         }
       }
     });

@@ -40,6 +40,9 @@ export default {
     },
     setAreaSelected(state, payload) {
       state.areaSelected = payload.area;
+    },
+    clearUser(state){
+      state.user = null;
     }
   },
   actions: {
@@ -52,6 +55,9 @@ export default {
     },
     areaChange({ commit, getters }, payload) {
       commit("setAreaSelected", payload);
+    },
+    clearUser({ commit }){
+      commit("clearUser");
     }
   },
   getters: {

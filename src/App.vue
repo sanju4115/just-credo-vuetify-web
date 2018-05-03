@@ -1,6 +1,13 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-bind:class="{navigationBar:$vuetify.breakpoint.lgAndUp}" class="secondary darken-4" dark v-if="userIsAuthenticated" fixed :clipped="$vuetify.breakpoint.lgAndUp" app v-model="drawer">
+    <v-navigation-drawer
+      v-bind:class="{navigationBar:$vuetify.breakpoint.lgAndUp}"
+       class="secondary darken-4"
+       dark v-if="userIsAuthenticated"
+       fixed
+       :clipped="$vuetify.breakpoint.lgAndUp"
+       app
+       v-model="drawer">
       <v-list>
         <template v-for="item in items">
           <v-layout row v-if="item.heading" align-center :key="item.heading">
@@ -53,15 +60,18 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
-      color="primary"
+      :color="!userIsAuthenticated && !isScrolling ? 'transparent' : 'primary'"
+      v-scroll="onScroll"
       dark
       app
+      flat
       :clipped-left="$vuetify.breakpoint.lgAndUp"
       fixed
-      extense :style="{'height':height + '%'}">
-
-      <img style="cursor : pointer" @click.stop="drawer = !drawer" src="/static/logo_tag.png" width="300px" class="text-xs-center"/>
-
+      extense>
+      <img style="cursor : pointer"
+           @click.stop="drawer = !drawer"
+           src="/static/logo_tag.png"
+           width="250px" class="text-xs-center"/>
       <v-text-field v-if="userIsAuthenticated"
         flat
         solo-inverted
@@ -312,27 +322,27 @@ export default {
             children: [
               {
                 text: "School",
-                link: "/profile"
+                link: "/addPlace"
               },
               {
                 text: "Coaching",
-                link: "/profile"
+                link: "/addPlace"
               },
               {
                 text: "Music School",
-                link: "/profile"
+                link: "/addPlace"
               },
               {
                 text: "Sports School",
-                link: "/profile"
+                link: "/addPlace"
               },
               {
                 text: "Art School",
-                link: "/profile"
+                link: "/addPlace"
               },
               {
                 text: "Private/Home Tutors",
-                link: "/profile"
+                link: "/addPlace"
               }
             ]
           },
@@ -406,6 +416,14 @@ export default {
     "app-profile-menu": ProfileMenu
   },
   data: () => ({
+    isScrolling: false,
+    icons: [
+      "fab fa-facebook",
+      "fab fa-twitter",
+      "fab fa-google-plus",
+      "fab fa-linkedin",
+      "fab fa-instagram"
+    ],
     email: "",
     password: "",
     loginEmail: "",
@@ -417,6 +435,10 @@ export default {
     snackbarText: null
   }),
   methods: {
+    onScroll () {
+      this.isScrolling = (window.pageYOffset ||
+        document.documentElement.scrollTop || 0) > 100
+    },
     onRegister: function() {
       this.$store.dispatch("registerUser", {
         email: this.email,

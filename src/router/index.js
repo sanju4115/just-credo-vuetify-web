@@ -8,6 +8,7 @@ import ProfileHome from '../components/profile/ProfileHome'
 import LoginRegister from '../components/LoginRegister'
 import SchoolHome from '../components/place/SchoolHome'
 import Error from '../components/error/Error'
+import AddPlaceHome from '../components/addPlace/AddPlaceHome'
 
 Vue.use(Router);
 
@@ -71,6 +72,15 @@ let router =  new Router({
       props: (route) => ({
         query: route.query.error
       }),
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/addPlace',
+      name: 'AddPlace',
+      component: AddPlaceHome,
+      props: true,
       meta:{
         requiresAuth: true
       }

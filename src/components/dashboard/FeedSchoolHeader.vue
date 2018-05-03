@@ -22,7 +22,7 @@
         </v-layout>
       </v-flex>
       <v-flex class="justify-end" xs2 sm1 md1 v-if="bookmarkColor">
-        <v-tooltip bottom>
+        <v-tooltip top>
           <v-btn flat icon :color="bookmarkColor" @click.stop="bookmarkOrUnBookmark" slot="activator">
             <v-icon>bookmark</v-icon>
           </v-btn>
@@ -87,8 +87,17 @@ export default {
     bookmarkId: null
   }),
   created: function() {
-    db
-      .collection("schools")
+    /**
+     * Queries on the collection schools of the db
+     * to find out the school detail
+     *
+     * Then it queries on the bookmark collection to find
+     * if the current user has bookmarked this school or not
+     *
+     * If current user bookmarked the school change the color
+     *
+     */
+    db.collection("schools")
       .doc(this.schoolID)
       .get()
       .then(doc => {
@@ -130,6 +139,16 @@ export default {
       });
   },
   methods: {
+    /**
+     * Called when user clicks on the bookmark icon
+     * Two cases:
+     * 1. if the current user has bookmarked the school
+     * user then it will open the confirmation dialogue box
+     * 2. if the user has not bookmarked the school will start
+     * bookmarking process and creates new document
+     * in the the bookmark collection
+     *
+     */
     bookmarkOrUnBookmark: function() {
       if (!this.isBookmarked) {
         this.bookmarkColor = false;
@@ -175,6 +194,13 @@ export default {
         this.unBookmarkDialogue = true;
       }
     },
+
+    /**
+     * Called when user remove bookmark
+     *
+     * Deletes that doc from the bookmark collection
+     * and makes corresponding changes in the school db as well
+     */
     unBookmarking: function() {
       this.unBookmarkProcessing = true;
       const batch = db.batch();
@@ -201,6 +227,12 @@ export default {
         this.isBookmarked = false;
       });
     },
+
+    /**
+     * Called before destroying this component
+     *
+     * un-subscribing from database listeners
+     */
     beforeDestroy() {
       this.bookmarkSubscription();
     }

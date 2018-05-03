@@ -13,7 +13,7 @@
     <v-layout row wrap v-else>
       <v-flex d-flex xs3 sm2 md2 >
           <v-avatar v-if="user.profilePic" size="50">
-            <img :src="user.profilePic" alt="user.name">
+            <img :src="user.profilePic" :alt="user.name">
           </v-avatar>
       </v-flex>
       <v-flex d-flex xs6 sm9 md9>
@@ -27,7 +27,7 @@
         </v-layout>
       </v-flex>
       <v-flex class="justify-end" xs2 sm1 md1 v-if="followingColor">
-        <v-tooltip top>
+        <v-tooltip bottom>
           <v-btn flat icon :color="followingColor" @click.stop="followOrUnfollow" slot="activator">
             <v-icon>person</v-icon>
           </v-btn>
@@ -77,18 +77,25 @@ export default {
   props: ["uid"],
   data: () => ({
     user: null,
-    followingColor:null,
-    isFollowing:null,
-    unFollowDialogue:false,
-    unFollowProcessing:false,
-    currentUser:null,
-    followingNum:0,
-    followerNum:0,
-    loadingFollowing:true,
-    loadingFollower:true,
-    loadingUser : true
+    followingColor: null,
+    isFollowing: null,
+    unFollowDialogue: false,
+    unFollowProcessing: false,
+    currentUser: null,
+    followingNum: 0,
+    followerNum: 0,
+    loadingFollowing: true,
+    loadingFollower: true,
+    loadingUser: true,
+    followingSubscription: null,
+    followerSubscription: null,
+    followRelSubscription: null,
+    followId: null
   }),
   created: function() {
+    /**
+     * Fetch the user information of the review
+     */
     db.collection("users")
       .doc(this.uid)
       .get()
@@ -104,37 +111,62 @@ export default {
         console.log("Error getting document:", error);
       });
 
-
-    db.collection("following").doc(this.uid)
-      .onSnapshot({}, doc => {
-        if (doc.exists) {
-          const map = Object.keys(doc.data());
-          this.followingNum = map.length;
-        } else {
-          this.followingNum = 0;
-        }
+    /**
+     * Fetches the current user from the store
+     *
+     * Queries on the collection follow of the db
+     * to find out the number of following of the
+     * review user
+     *
+     * Tags a listener that will invoked if any change
+     * occurs in the db for the query
+     *
+     */
+    this.currentUser = this.$store.getters.user;
+    this.followingSubscription = db
+      .collection("follow")
+      .where("followingUid", "==", this.uid)
+      .onSnapshot(querySnapshot => {
+        this.followingNum = querySnapshot.docs.length;
         this.loadingFollowing = false;
       });
 
-
-    db.collection("follower").doc(this.uid)
-      .onSnapshot({}, doc => {
-        if (doc.exists) {
-          const map = Object.keys(doc.data());
-          this.followerNum = map.length;
-        } else {
-          this.followerNum = 0;
-        }
+    /**
+     * Queries on the collection follow of the db
+     * to find out the number of follower of the
+     * review user
+     *
+     * Tags a listener that will invoked if any change
+     * occurs in the db for the query
+     *
+     */
+    this.followerSubscription = db
+      .collection("follow")
+      .where("followerUid", "==", this.uid)
+      .onSnapshot(querySnapshot => {
+        this.followerNum = querySnapshot.docs.length;
         this.loadingFollower = false;
       });
 
-    this.currentUser = this.$store.getters.user;
+    /**
+     * Queries on the collection follow of the db
+     * to find out if the current user follows the
+     * review user
+     *
+     * Tags a listener that will invoked if any change
+     * occurs in the db for the query
+     *
+     */
     if (this.uid !== this.currentUser.uid) {
-      db.collection("following").doc(this.currentUser.uid)
-        .onSnapshot({}, doc => {
-          if (doc.exists && doc.get(this.uid)) {
+      this.followRelSubscription = db
+        .collection("follow")
+        .where("followingUid", "==", this.uid)
+        .where("followerUid", "==", this.currentUser.uid)
+        .onSnapshot(querySnapshot => {
+          if (querySnapshot.docs.length > 0) {
             this.followingColor = "green";
             this.isFollowing = true;
+            this.followId = querySnapshot.docs[0].id;
           } else {
             this.followingColor = "grey";
             this.isFollowing = false;
@@ -142,39 +174,70 @@ export default {
         });
     }
   },
-  methods:{
-    followOrUnfollow:function () {
-      if (!this.isFollowing){
+  methods: {
+    /**
+     * called when user clicks on the follow icon
+     * Two cases:
+     * 1. if the current user is following the review
+     * user then it will open the confirmation dialogue box
+     * 2. if the user is not following then user will start
+     * following the review user
+     *
+     * creates a doc in the follow collection of the db
+     */
+    followOrUnfollow: function() {
+      if (!this.isFollowing) {
         this.followingColor = false;
         const batch = db.batch();
-        const followingRef = db.collection("following").doc(this.currentUser.uid);
-        batch.update(followingRef,{[this.uid]: true});
-        const followerRef = db.collection("follower").doc(this.uid);
-        batch.update(followerRef, {[this.currentUser.uid]: true});
-        batch.commit().then(() => {
-          this.followingColor = 'green';
-          this.isFollowing = true;
-        }).catch(function(error) {
-          console.log(error)
+        const followingRef = db.collection("follow").doc();
+        batch.set(followingRef, {
+          followingUid: this.uid,
+          followerUid: this.currentUser.uid
         });
-      }else {
+        batch
+          .commit()
+          .then(() => {
+            this.followingColor = "green";
+            this.isFollowing = true;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
         this.unFollowDialogue = true;
       }
-
     },
-    unFollowing:function () {
+
+    /**
+     * called when user un-follow any person
+     * who has written the review
+     *
+     * Deletes that doc from the follow collection
+     */
+    unFollowing: function() {
       this.unFollowProcessing = true;
       const batch = db.batch();
-      const followingRef = db.collection("following").doc(this.currentUser.uid);
-      batch.update(followingRef,{[this.uid]: firebase.firestore.FieldValue.delete()});
-      const followerRef = db.collection("follower").doc(this.uid);
-      batch.update(followerRef, {[this.currentUser.uid]: firebase.firestore.FieldValue.delete()});
+      const followingRef = db.collection("follow").doc(this.followId);
+      batch.delete(followingRef);
       batch.commit().then(() => {
         this.unFollowProcessing = false;
         this.unFollowDialogue = false;
-        this.followingColor = 'grey';
+        this.followingColor = "grey";
         this.isFollowing = false;
       });
+    }
+  },
+
+  /**
+   * called before destroying this component
+   *
+   * un-subscribing from database listeners
+   */
+  beforeDestroy() {
+    this.followingSubscription();
+    this.followerSubscription();
+    if (this.followRelSubscription !== null) {
+      this.followRelSubscription();
     }
   }
 };
