@@ -300,7 +300,7 @@ export default {
         }
         this.loading = false;
       })
-      .catch(function(error) {
+      .catch(error => {
         this.$router.push(`/error?error=${error}`);
       });
   },

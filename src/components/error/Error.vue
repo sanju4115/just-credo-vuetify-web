@@ -1,6 +1,5 @@
 <template>
-
-  <div class="error-page">
+  <div class="error-page background">
     <div class="error-content">
       <div class="container">
         <img src="/static/404.png" alt="" class="img-responsive" />
@@ -12,16 +11,6 @@
       </div>
     </div>
   </div>
-
-  <!--<div class="error">-->
-    <!--<v-card color="blue-grey darken-2" class="white&#45;&#45;text">-->
-      <!--<v-card-title primary-title>-->
-        <!--<div  class="headline">Ooops!</div>-->
-        <!--<div class="md-subhead">An error occurred</div>-->
-        <!--<div>{{error}}</div>-->
-      <!--</v-card-title>-->
-    <!--</v-card>-->
-  <!--</div>-->
 </template>
 
 <script>

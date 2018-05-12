@@ -124,6 +124,7 @@ export default {
     firstTime: true,
     sticky:null,
     sponsored:null,
+    reviewSubscription:null,
     category:{
       key:"primarySchool",
       name:"Popular And Sponsored"
@@ -186,7 +187,7 @@ export default {
         });
     },
     buildEvenListener() {
-      db
+      this.reviewSubscription = db
         .collection("reviews")
         .where(
           "geoHash." + this.areaSelected,
@@ -226,6 +227,17 @@ export default {
   computed: {
     currentUser() {
       return this.$store.getters.user;
+    }
+  },
+
+  /**
+   * Called before destroying this component
+   *
+   * un-subscribing from database listeners
+   */
+  beforeDestroy() {
+    if (this.reviewSubscription !== null) {
+      this.reviewSubscription();
     }
   }
 };

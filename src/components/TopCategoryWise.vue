@@ -14,19 +14,8 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-flex style="cursor: pointer;" sm4 md3 v-for="school in schools" :key="school.key" @click="onClickSchool(school.key)">
-        <v-card color="background white--text" class="ma-1">
-          <v-card-media
-            height="125px"
-            :src="school.image">
-          </v-card-media>
-          <v-card-title primary-title>
-            <div class="truncate colorPrimaryText--text">
-              <span>{{school.name}}</span><br>
-              <span class="colorSecondaryText--text" style="color: black">{{school.location.formatted_address}}</span>
-            </div>
-          </v-card-title>
-        </v-card>
+      <v-flex style="cursor: pointer;" xs6 sm4 md3 v-for="school in schools" :key="school.key" @click="onClickSchool(school.key)">
+        <School :school="school"></School>
       </v-flex>
     </v-layout>
   </v-container>
@@ -34,8 +23,10 @@
 
 <script>
 import db from "./firebaseInit";
+import School from "./place/School";
 export default {
   name: "TopCategoryWise",
+  components: {School},
   props: {
     category: {
       type: Object,
@@ -52,8 +43,8 @@ export default {
   },
   created() {
     const placeType = "placeType" + "." + this.category.key;
-    db
-      .collection("schools")
+    db.collection("schools")
+      .where("published","==",true)
       .where(placeType, "==", true)
       .where("location.geohash50", "==", this.$store.getters.location.geohash50)
       .orderBy("rating", "desc")
@@ -63,18 +54,14 @@ export default {
         this.loading = false;
         querySnapshot.forEach(doc => {
           this.heading = true;
-          let images = doc.data().images;
-          if (images !== undefined && images != null) {
-            images = Object.values(images)[0];
+          const school = doc.data();
+          if (school.coverPic === undefined || school.coverPic === null) {
+            if (school.images !== undefined && school.images !== null){
+              school["coverPic"] = Object.values(school.images)[0];
+            }
           }
-          const data = {
-            image: images,
-            key: doc.data().id,
-            name: doc.data().name,
-            location: doc.data().location
-          };
+          this.schools.push(school);
           this.schoolsForStoring.push(doc.data());
-          this.schools.push(data);
         });
         this.$store.dispatch("storeSchools", { data: this.schoolsForStoring }); //storing to the store to use in future
       })
@@ -92,11 +79,5 @@ export default {
 </script>
 
 <style scoped>
-.truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 12px;
-  font-weight: bold;
-}
+
 </style>

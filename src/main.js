@@ -12,11 +12,20 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import VuetifyGoogleAutocomplete from "vuetify-google-autocomplete";
 import db from "./components/firebaseInit";
 import colors from 'vuetify/es5/util/colors';
-import VueSticky from 'vue-sticky'
-import Croppa from 'vue-croppa'
+import VueSticky from 'vue-sticky';
+import Croppa from 'vue-croppa';
+import vueSmoothScroll from 'vue-smoothscroll';
+import VueProgressiveImage from 'vue-progressive-image'
+import VueAnimate from 'vue2-animate/dist/vue2-animate.min.css';
 
+Vue.use(VueProgressiveImage, {
+  placeholder: 'static/images/placeholder.png',
+  fallback:"static/images/broken-image.jpg"
+});
+
+Vue.use(VueAnimate);
+Vue.use(vueSmoothScroll);
 Vue.use(Croppa);
-
 Vue.use(VuetifyGoogleAutocomplete, {});
 Vue.use(VueCarousel);
 Vue.use(VueSticky);
@@ -28,7 +37,7 @@ Vue.use(VueGoogleMaps, {
   }
 });
 
-/*Vue.use(Vuetify, {
+Vue.use(Vuetify, {
   theme: {
     primary: "#000000",
     secondary: "#212121",
@@ -42,25 +51,25 @@ Vue.use(VueGoogleMaps, {
     colorPrimaryText: "#FFFFFF",
     colorSecondaryText: "#757575"
   }
-});*/
-
-Vue.use(Vuetify, {
-  theme: {
-    primary: "#00796b",
-    secondary: "#009688",
-    accent: "#4CAF50",
-    error: "#FF5252",
-    info: "#2196F3",
-    success: "#4CAF50",
-    warning: "#FFC107",
-    background: "#FFFFFF",
-    primaryLight: "#B2DFDB",
-    colorPrimaryText: "#000000",
-    colorSecondaryText: "#757575",
-    secondaryIcon: colors.grey.darken1,
-    secondaryBackground:"grey lighten-3"
-  }
 });
+
+// Vue.use(Vuetify, {
+//   theme: {
+//     primary: "#00796b",
+//     secondary: "#009688",
+//     accent: "#4CAF50",
+//     error: "#FF5252",
+//     info: "#2196F3",
+//     success: "#4CAF50",
+//     warning: "#FFC107",
+//     background: "#FFFFFF",
+//     primaryLight: "#B2DFDB",
+//     colorPrimaryText: "#000000",
+//     colorSecondaryText: "#757575",
+//     secondaryIcon: colors.grey.darken1,
+//     secondaryBackground:"grey lighten-3"
+//   }
+// });
 
 Vue.config.productionTip = false;
 Vue.component("app-alert-error", ErrorAlert);

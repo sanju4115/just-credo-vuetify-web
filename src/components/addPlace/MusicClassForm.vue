@@ -286,7 +286,7 @@
           }
           this.loading = false;
         })
-        .catch(function(error) {
+        .catch(error => {
           this.$router.push(`/error?error=${error}`);
         });
     },
@@ -486,10 +486,7 @@
         }
       },
       validateFacilityAndExtraCurricullar: function() {
-        if (this.specialFacilities.length <= 0) {
-          this.errorText = "Please select at least one special facility.";
-          this.errorSnackbar = true;
-        } else if (this.facilities.length <= 0) {
+       if (this.facilities.length <= 0) {
           this.errorText = "Please select at least one facility.";
           this.errorSnackbar = true;
         } else if (this.extracurricular.length <= 0) {

@@ -1,22 +1,37 @@
 <template>
     <v-card class="grey lighten-3">
-      <v-parallax src="/static/images/banners/edu.jpg" height="400">
-        <v-layout row wrap justify-end>
-          <v-flex md6 sm12 class="tilled justify-center">
-            <v-layout align-center fill-height>
-              <div style="margin-left: 150px;">
-                <h2>Create your advertising profile
-                  <span>here</span></h2>
-                <a href="#addForm" style="text-decoration:none">
-                  <v-btn color="success" class="mt-3">Start Profile Creation</v-btn>
-                </a>
-              </div>
+      <div class="secondary">
+        <v-parallax src="static/images/banners/rsz_1_xvjg3i1j5fhpdx961bbsvq.jpg"
+                    height="650" style="margin-top: -64px;" class="secondary">
+          <div class="homebanner">
+            <v-layout row wrap class="pa-5 text-xs-center justify-center">
+              <v-flex xs12>
+                <v-layout align-center fill-height row wrap class="pa-5 mt-5 justify-center">
+                  <v-flex xs12>
+                    <div>
+                      <h3 class="welcome">Create Your Advertising Profile !</h3>
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <v-flex xs6 class="transparent text-xs-center justify-center">
+                <v-select
+                  class="mt-2 mb-2"
+                  solo inverted
+                  :items="placeTypes"
+                  label="Choose the type of educational place"
+                  single-line
+                  @change="placeTypeSelected"></v-select>
+                  <v-btn color="success" class="mt-3"
+                         @click="checkType">Start Profile Creation</v-btn>
+
+              </v-flex>
             </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-parallax>
-      <v-layout row wrap>
-        <v-flex md12 class="primary background--text pa-5">
+          </div>
+        </v-parallax>
+      </div>
+      <v-layout row wrap id="addForm">
+        <v-flex md12 class="secondary slanted background--text pa-5">
           <div>
             <p style="font-weight: bold">Owners of schools, coaching, music classes, sports classes, art classes and
               private/home tutors can create their advertising profile very easily.
@@ -47,31 +62,19 @@
           </span>
           </div>
         </v-flex>
-        <v-flex xs12>
-          <v-alert color="primary" icon="info" :value="true" class="mt-0" style="font-weight: bold">
-            Start the form submission by selecting the type of educational place.
-          </v-alert>
-        </v-flex>
-        <v-flex xs12 md4 sm6 class="background pl-5" id="addForm">
-          <v-subheader class="title mt-2 mb-3 colorPrimaryText--text">Choose the type of Educational Place</v-subheader>
-        </v-flex>
-        <v-flex xs12 md8 sm6 class="background pr-5 pl-5 text-xs-center">
-          <v-select
-            class="mt-2 mb-2"
-            solo inverted
-            :items="placeTypes"
-            label="Select"
-            single-line
-            @change="placeTypeSelected"
-          ></v-select>
-        </v-flex>
       </v-layout>
-
       <!--<v-btn color="primary" @click.stop="location">Submit</v-btn>-->
       <v-container>
         <SchoolForm v-if="selectedType==='School'"></SchoolForm>
         <MusicClassForm v-else-if="selectedType==='Music School'"></MusicClassForm>
       </v-container>
+      <v-snackbar
+        color="error"
+        bottom
+        v-model="errorSnackbar">
+        {{ errorText }}
+        <v-btn dark flat @click.native="errorSnackbar = false">Close</v-btn>
+      </v-snackbar>
     </v-card>
 </template>
 
@@ -87,7 +90,9 @@
     data() {
     return {
       placeTypes:["School","Coaching","Music School","Sports School", "Art School","Private/Home Tutors"],
-      selectedType:null
+      selectedType:null,
+      errorSnackbar:false,
+      errorText:""
     };
   },
   methods:{
@@ -99,8 +104,30 @@
     placeTypeSelected(value){
       this.selectedType=value;
     },
+    checkType(){
+      this.errorSnackbar = false;
+      if (this.selectedType === null) {
+        this.errorText="Select type of educational place!";
+        this.errorSnackbar = true;
+      }else {
+        this.$SmoothScroll(document.getElementById('addForm'));
+      }
+    },
     location(){
-      db.collection("schools").doc("-L78UkWyK3E_RcWA20sK")
+      let batch = db.batch();
+      db.collection("schools").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          batch.update(doc.ref,{published:true});
+          console.log(doc.id, " => ", doc.data());
+        });
+
+        batch.commit().then(function () {
+          console.log("all schools published");
+        });
+      });
+
+
+      /*db.collection("schools").doc("-L78UkWyK3E_RcWA20sK")
         .get().then(doc => {
         if (doc.exists) {
           console.log("Document data:", doc.data());
@@ -121,7 +148,7 @@
         }
       }).catch(function(error) {
         console.log("Error getting document:", error);
-      });
+      });*/
     }
   }
 };
@@ -129,37 +156,40 @@
 
 <style scoped>
 
-.tilled div {
-  font-family: "Gudea", sans-serif;
-}
+  .homebanner{
+    overflow: hidden;
+    position: relative;
+    width:110%;
+    margin-right:-30px;
+    margin-left:-30px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
 
-.tilled p {
-  font-family: "Magra", sans-serif;
-}
+  .welcome {
+    font-family: "Roboto", sans-serif;
+    font-weight: 800;
+    line-height: 48px;
+    margin-bottom: 2%;
+    font-size: 43px;
+  }
 
-.tilled {
-  position: relative;
-  display: inline-block;
-  padding: 1em 5em 1em 1em;
-  overflow: hidden;
-  color: #fff;
-  margin-right: -30px;
-}
+  .homebanner span {
+    letter-spacing: 1px;
+    font-size: 15px;
+    font-weight: 400;
+  }
+  .homebanner h2 {
+    font-family: "Roboto", sans-serif;
+    line-height: 45px;
+    letter-spacing: 1px;
+    font-size: 25px;
+    font-weight: bold;
+  }
 
-.tilled:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  -webkit-transform-origin: 100% 0;
-  -ms-transform-origin: 100% 0;
-  transform-origin: 100% 0;
-  -webkit-transform: skew(15deg);
-  -ms-transform: skew(15deg);
-  transform: skew(15deg);
-  z-index: -1;
-}
+  .slanted {
+    clip-path: polygon(0 0, 1600px 0, 1600px 75%, 0 100%);
+  }
+
+
 </style>

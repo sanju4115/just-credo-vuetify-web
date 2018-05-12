@@ -128,7 +128,7 @@ export default {
             },
             err => {
               commit("setLoading", false);
-              commit("setLocationError", err.message);
+              commit("setLocationError", err);
               reject({data : err})
             }
           );

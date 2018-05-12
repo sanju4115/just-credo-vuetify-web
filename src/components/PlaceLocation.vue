@@ -24,7 +24,7 @@
       <v-flex v-if="loading" xs12 sm12 class="text-xs-center">
         <v-progress-circular
           indeterminate
-          class="colorPrimaryText--text"
+          class="background--text"
           :width="7"
           :size="30"
         ></v-progress-circular>

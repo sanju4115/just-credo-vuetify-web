@@ -234,7 +234,9 @@ export default {
      * un-subscribing from database listeners
      */
     beforeDestroy() {
-      this.bookmarkSubscription();
+      if (this.bookmarkSubscription !== null) {
+        this.bookmarkSubscription();
+      }
     }
   }
 };

@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer
       v-bind:class="{navigationBar:$vuetify.breakpoint.lgAndUp}"
-       class="secondary darken-4"
+       class="background"
        dark v-if="userIsAuthenticated"
        fixed
        :clipped="$vuetify.breakpoint.lgAndUp"
@@ -60,17 +60,15 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
-      :color="!userIsAuthenticated && !isScrolling ? 'transparent' : 'primary'"
-      v-scroll="onScroll"
+      color="secondary"
       dark
       app
-      flat
       :clipped-left="$vuetify.breakpoint.lgAndUp"
       fixed
       extense>
       <img style="cursor : pointer"
            @click.stop="drawer = !drawer"
-           src="/static/logo_tag.png"
+           src="/static/logo_web.png"
            width="250px" class="text-xs-center"/>
       <v-text-field v-if="userIsAuthenticated"
         flat
@@ -82,7 +80,7 @@
       <v-btn
         v-if="!userIsAuthenticated"
         type="submit"
-        color="secondary"
+        color="primary"
         @click.stop="dialog = !dialog">
         Login
       </v-btn>
