@@ -13,7 +13,7 @@
       </v-layout>
     </v-container>
     <v-container v-else pa-0 ma-0 fluid>
-      <v-jumbotron color="blue lighten-2" height="100">
+      <v-jumbotron color="indicatorColor" height="100">
       <div class="ml-5">
         <h3 class="welcome mt-3 pa-1 mb-1">Admin Dashboard</h3>
         <h3 class="welcome pa-1">{{model.name}}</h3>
@@ -43,6 +43,21 @@
                 <AddressWithFetch
                   :location="location"
                   @change-location="location = $event"></AddressWithFetch>
+                <BoardsAndClasses
+                  :boards="formData.boards"
+                  :boards-list="boards" @change-boardsList="boards = $event"
+                  :classes="formData.classes"
+                  :classes-list="classes" @change-classesList="classes = $event"></BoardsAndClasses>
+                <FacilitiesLike
+                  :facilities="formData.facilities"
+                  :facilities-selected="facilities"
+                  :special-facilities="formData.specialFacilities"
+                  :special-facilities-selected="specialFacilities"
+                  :extracurricular="formData.extracurricular"
+                  :extracurricular-selected="extracurricular"
+                  @change-specialFacilitiesSelected="specialFacilities = $event"
+                  @change-facilitiesSelected="facilities = $event"
+                  @change-extracurricularSelected="extracurricular = $event"></FacilitiesLike>
               </v-container>
             </v-card>
           </v-flex>
@@ -72,11 +87,12 @@ import ChangeCoverPic from "../utils/ChangeCoverPic";
 import CategoriesAndGender from "../formUtil/CategoriesAndGender";
 import Description from "../formUtil/Description";
 import AddressWithFetch from "../formUtil/AddressWithFetch";
-
+import BoardsAndClasses from "../formUtil/BoardsAndClasses";
+import FacilitiesLike from "../formUtil/FacilitiesLike";
 
 export default {
   name: "Approval",
-  components: {AddressWithFetch, Description, CategoriesAndGender, ChangeCoverPic},
+  components: {FacilitiesLike, BoardsAndClasses, AddressWithFetch, Description, CategoriesAndGender, ChangeCoverPic},
   data() {
     return {
       loading: true,

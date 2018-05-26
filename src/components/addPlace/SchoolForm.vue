@@ -48,42 +48,11 @@
         <v-stepper-step step="3" :complete="schoolForm > 3">Select boards and classes</v-stepper-step>
         <v-stepper-content step="3">
           <v-card class="ma-2">
-            <v-container fluid>
-              <v-layout row wrap>
-                <v-flex xs12 sm12 class="mb-3">
-                  <p style="font-weight: bold">Select Boards</p>
-                  <v-container fluid v-bind="{ [`grid-list-xs`]: true }">
-                    <v-layout row wrap>
-                      <v-flex
-                        xs4
-                        v-for="board in formData.boards">
-                        <v-checkbox :label="board.name"
-                                    v-model="boards"
-                                    color="accent"
-                                    hide-details :value="board.name"
-                        ></v-checkbox>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-flex>
-                <v-flex xs12 sm12 class="justify-center">
-                  <p style="font-weight: bold">Select Classes</p>
-                  <v-container fluid v-bind="{ [`grid-list-xs`]: true }">
-                    <v-layout row wrap>
-                      <v-flex
-                        xs4
-                        v-for="schoolClass in formData.classes">
-                        <v-checkbox :label="schoolClass.name"
-                                    v-model="classes"
-                                    color="accent"
-                                    hide-details :value="schoolClass.name"
-                        ></v-checkbox>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-flex>
-              </v-layout>
-            </v-container>
+            <BoardsAndClasses
+              :boards="formData.boards"
+              :boards-list="boards" @change-boardsList="boards = $event"
+              :classes="formData.classes"
+              :classes-list="classes" @change-classesList="classes = $event"></BoardsAndClasses>
           </v-card>
           <v-btn color="primary" @click.native="validation">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -91,37 +60,16 @@
         <v-stepper-step step="4" :complete="schoolForm > 4">Select facilities provided </v-stepper-step>
         <v-stepper-content step="4">
           <v-card class="ma-2">
-            <v-container fluid>
-              <v-layout row wrap>
-                <v-flex xs12>
-                  <v-select
-                    v-model="specialFacilities"
-                    label="Select special facilities or create a new ones"
-                    chips
-                    tags
-                    :items="formData.specialFacilities.map(value => value.name)"
-                  ></v-select>
-                </v-flex>
-                <v-flex xs12>
-                  <v-select
-                    v-model="facilities"
-                    label="Select general facilities or create a new ones"
-                    chips
-                    tags
-                    :items="formData.facilities.map(value => value.name)"
-                  ></v-select>
-                </v-flex>
-                <v-flex xs12>
-                  <v-select
-                    v-model="extracurricular"
-                    label="Select extracurricular activities or create a new ones"
-                    chips
-                    tags
-                    :items="formData.extracurricular.map(value => value.name)"
-                  ></v-select>
-                </v-flex>
-              </v-layout>
-            </v-container>
+            <FacilitiesLike
+              :facilities="formData.facilities"
+              :facilities-selected="facilities"
+              :special-facilities="formData.specialFacilities"
+              :special-facilities-selected="specialFacilities"
+              :extracurricular="formData.extracurricular"
+              :extracurricular-selected="extracurricular"
+              @change-specialFacilitiesSelected="specialFacilities = $event"
+              @change-facilitiesSelected="facilities = $event"
+              @change-extracurricularSelected="extracurricular = $event"></FacilitiesLike>
           </v-card>
           <v-btn color="primary" @click.native="validation">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -183,10 +131,14 @@ import SchoolFormValidation from "../../utils/SchoolFormValidation";
 import CategoriesAndGender from "../formUtil/CategoriesAndGender";
 import Description from "../formUtil/Description";
 import AddressWithFetch from "../formUtil/AddressWithFetch";
+import BoardsAndClasses from "../formUtil/BoardsAndClasses";
+import FacilitiesLike from "../formUtil/FacilitiesLike";
 
 export default {
   name: "SchoolForm",
-  components: {AddressWithFetch, Description, CategoriesAndGender, Address, VuetifyGoogleAutocomplete },
+  components: {
+    FacilitiesLike,
+    BoardsAndClasses, AddressWithFetch, Description, CategoriesAndGender, Address, VuetifyGoogleAutocomplete },
   data() {
     return {
       schoolForm: 1,
@@ -236,51 +188,6 @@ export default {
       });
   },
   methods: {
-    /**
-     * Fetches location by using google's place api
-     * After fetching the location it store location in the location variable
-     */
-    getAddressData: function(addressData, placeResultData) {
-      this.location = SchoolFormValidation.getAddressData(addressData, placeResultData);
-      this.loadingLocation = false;
-      this.locationError = false;
-    },
-    /**
-     * Fetches user current location
-     * if user allows browser to fetch location,
-     * if user do not allow browser to fetch location
-     * then it will show error message
-     *
-     * After fetching the location it store location in the location variable
-     */
-    fetchUserLocation() {
-      this.loadingLocation = true;
-      this.locationError = null;
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            SchoolFormValidation.summarizeLocation(position)
-              .then(result=>{
-                this.loadingLocation = false;
-                this.location = result.location;
-              }).catch(result=>{
-              this.loadingLocation = false;
-              this.locationErrorText = result.locationErrorText;
-              this.locationError = true;
-            });
-          },
-          err => {
-            this.loadingLocation = false;
-            this.locationErrorText = err.message;
-            this.locationError = true;
-          }
-        );
-      } else {
-        this.loadingLocation = false;
-        this.locationErrorText = "Cannot access location.";
-        this.locationError = true;
-      }
-    },
     saveSchool: function(snapshot, newSchoolRef, placeType) {
       const school = {
         coverPic: snapshot.downloadURL,

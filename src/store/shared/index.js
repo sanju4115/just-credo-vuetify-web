@@ -8,7 +8,8 @@ export default {
     loading: false,
     error: null,
     areaSelected:"geohash50",
-    isUserAdmin:false
+    isUserAdmin:false,
+    drawerState:true
   },
   mutations: {
     setUser(state, payload) {
@@ -55,6 +56,9 @@ export default {
         console.log('Share/index.js setIsUserAdmin error getting documents', err);
         handleLocationError(false);
       });
+    },
+    setDrawerState(state){
+      state.drawerState = !state.drawerState;
     }
   },
   actions: {
@@ -76,6 +80,9 @@ export default {
     },
     setIsUserAdmin({ commit},payload){
       commit("setIsUserAdmin",payload);
+    },
+    toggleDrawerState({commit}){
+      commit("setDrawerState");
     }
   },
   getters: {
@@ -93,6 +100,9 @@ export default {
     },
     isUserAdmin(state){
       return state.isUserAdmin;
+    },
+    drawerState(state){
+      return state.drawerState;
     }
   }
 };
