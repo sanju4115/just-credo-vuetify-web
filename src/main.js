@@ -15,12 +15,23 @@ import colors from 'vuetify/es5/util/colors';
 import VueSticky from 'vue-sticky';
 import Croppa from 'vue-croppa';
 import vueSmoothScroll from 'vue-smoothscroll';
-import VueProgressiveImage from 'vue-progressive-image'
+import VueProgressiveImage from 'vue-progressive-image';
 import VueAnimate from 'vue2-animate/dist/vue2-animate.min.css';
+import Snotify, { SnotifyPosition } from 'vue-snotify';
+import 'vue-snotify/styles/material.css';
 
+
+const options = {
+  toast: {
+    position: SnotifyPosition.rightTop
+  }
+};
+
+Vue.use(Snotify, options);
 Vue.use(VueProgressiveImage, {
   placeholder: 'static/images/placeholder.png',
-  fallback:"static/images/broken-image.jpg"
+  fallback:"static/images/broken-image.jpg",
+  blur:"30"
 });
 
 Vue.use(VueAnimate);
@@ -47,6 +58,7 @@ Vue.use(Vuetify, {
     success: "#4CAF50",
     warning: "#FFC107",
     background: "#455A64",
+    indicatorColor:colors.blueGrey.darken4,
     primaryLight: "#B2DFDB",
     colorPrimaryText: "#FFFFFF",
     colorSecondaryText: "#757575"
@@ -85,6 +97,11 @@ firebase.auth().onAuthStateChanged(user => {
       store,
       render: h => h(App),
       created() {
+        /**
+         * Set service worker registered false as browser refresh
+         */
+        this.$store.dispatch("setServiceWorkerRegistered", false);
+
         if (user) {
           const docRef = db.collection("users").doc(user.uid);
           docRef.get().then(function(doc) {
@@ -109,15 +126,18 @@ firebase.auth().onAuthStateChanged(user => {
                 });
             }
           }).catch(function(error) {
-            console.log("Error getting document:", error);
+            console.log("Main.js onAuthStateChanged Error getting document:", error);
           });
+
+          /**
+           * Auto sign in
+           */
           this.$store.dispatch("autoSignIn", user);
+
         }else {
           /**
-           *
            * User session ended
            * so clear user and location
-           *
            */
           this.$store.dispatch("clearLocation");
           this.$store.dispatch("clearUser");
@@ -126,3 +146,4 @@ firebase.auth().onAuthStateChanged(user => {
     });
   }
 });
+

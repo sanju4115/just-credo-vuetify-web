@@ -2,14 +2,14 @@
     <v-card class="grey lighten-3">
       <div class="secondary">
         <v-parallax src="static/images/banners/rsz_1_xvjg3i1j5fhpdx961bbsvq.jpg"
-                    height="650" style="margin-top: -64px;" class="secondary">
-          <div class="homebanner">
+                    height="550" class="secondary">
+          <div :class="{'homebanner': $vuetify.breakpoint.smAndDown}">
             <v-layout row wrap class="pa-5 text-xs-center justify-center">
               <v-flex xs12>
                 <v-layout align-center fill-height row wrap class="pa-5 mt-5 justify-center">
-                  <v-flex xs12>
-                    <div>
-                      <h3 class="welcome">Create Your Advertising Profile !</h3>
+                  <v-flex xs8>
+                    <div :class="{'slanted1': $vuetify.breakpoint.mdAndUp}">
+                      <h3 class="welcome" style="padding-top: 3vh">Create Your Advertising Profile !</h3>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -31,7 +31,7 @@
         </v-parallax>
       </div>
       <v-layout row wrap id="addForm">
-        <v-flex md12 class="secondary slanted background--text pa-5">
+        <v-flex md12 class="addPlace primary--text pa-5">
           <div>
             <p style="font-weight: bold">Owners of schools, coaching, music classes, sports classes, art classes and
               private/home tutors can create their advertising profile very easily.
@@ -63,7 +63,7 @@
           </div>
         </v-flex>
       </v-layout>
-      <!--<v-btn color="primary" @click.stop="location">Submit</v-btn>-->
+      <v-btn color="primary" @click.stop="location">Submit</v-btn>
       <v-container>
         <SchoolForm v-if="selectedType==='School'"></SchoolForm>
         <MusicClassForm v-else-if="selectedType==='Music School'"></MusicClassForm>
@@ -114,17 +114,25 @@
       }
     },
     location(){
-      let batch = db.batch();
-      db.collection("schools").get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          batch.update(doc.ref,{published:true});
-          console.log(doc.id, " => ", doc.data());
-        });
-
-        batch.commit().then(function () {
-          console.log("all schools published");
-        });
+      this.$snotify.simple('Example body content', 'Example title!', {
+        timeout: 2000,
+        showProgressBar: false,
+        closeOnClick: true,
+        icon: 'assets/custom-svg.svg'
       });
+
+
+      // let batch = db.batch();
+      // db.collection("schools").get().then(function(querySnapshot) {
+      //   querySnapshot.forEach(function(doc) {
+      //     batch.update(doc.ref,{published:true});
+      //     console.log(doc.id, " => ", doc.data());
+      //   });
+      //
+      //   batch.commit().then(function () {
+      //     console.log("all schools published");
+      //   });
+      // });
 
 
       /*db.collection("schools").doc("-L78UkWyK3E_RcWA20sK")
@@ -169,27 +177,41 @@
   .welcome {
     font-family: "Roboto", sans-serif;
     font-weight: 800;
-    line-height: 48px;
+    line-height: 4.8vh;
     margin-bottom: 2%;
-    font-size: 43px;
+    font-size: 4.3vh;
   }
 
-  .homebanner span {
-    letter-spacing: 1px;
-    font-size: 15px;
+  .addPlace span {
+    letter-spacing: 0.1vh;
+    font-size: 2vh;
     font-weight: 400;
   }
+
+  .addPlace p {
+    letter-spacing: 0.1vh;
+    font-size: 2vh;
+    font-weight: 400;
+  }
+
   .homebanner h2 {
     font-family: "Roboto", sans-serif;
-    line-height: 45px;
-    letter-spacing: 1px;
-    font-size: 25px;
+    line-height: 4.5vh;
+    letter-spacing: 0.1vh;
+    font-size: 2.5vh;
     font-weight: bold;
   }
 
   .slanted {
-    clip-path: polygon(0 0, 1600px 0, 1600px 75%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
   }
+
+  .slanted1 {
+    clip-path: polygon(5% 5%, 100% 0, 100% 80%, 0 100%);
+    background: #212121;
+    height: 100px
+  }
+
 
 
 </style>

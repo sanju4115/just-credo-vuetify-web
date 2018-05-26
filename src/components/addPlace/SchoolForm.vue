@@ -17,26 +17,13 @@
         <v-stepper-content step="1">
           <v-card class="ma-2">
             <v-container fluid>
-              <v-layout row wrap>
-                <v-flex xs6 sm4 md4>
-                  <p>Select Type</p>
-                  <v-checkbox v-for="category in formData.categories"
-                    :label="category.name"
-                    v-model="schoolType"
-                    color="accent"
-                    hide-details :value="category.name"
-                  ></v-checkbox>
-                </v-flex>
-                <v-flex xs6 sm4 md4 class="justify-center">
-                  <p >Select Gender</p>
-                  <v-checkbox v-for="gender in formData.gender"
-                              :label="gender.name"
-                              v-model="genderList"
-                              color="accent"
-                              hide-details :value="gender.name"
-                  ></v-checkbox>
-                </v-flex>
-              </v-layout>
+              <CategoriesAndGender
+                :categories="formData.categories"
+                :school-type="schoolType"
+                :genders="formData.gender"
+                :gender-list="genderList"
+                @change-schoolType="schoolType = $event"
+                @change-genderList="genderList = $event"></CategoriesAndGender>
             </v-container>
           </v-card>
           <v-btn color="primary" @click="validation">Continue</v-btn>
@@ -45,73 +32,15 @@
         <v-stepper-step step="2" :complete="schoolForm > 2">Description</v-stepper-step>
         <v-stepper-content step="2">
           <v-card class="ma-2">
-            <v-card-text>
-              <v-text-field
-                label="Legal Educational Place Name"
-                v-model="schoolName"
-                :rules="[() => schoolName.length > 0 || 'This field is required']"
-                required></v-text-field>
-              <v-text-field
-                label="Legal Email"
-                v-model="email"
-                required
-                :rules="[() => email.trim().length > 0 || 'This field is required']"></v-text-field>
-              <v-text-field
-                label="Legal Website"
-                persistent-hint
-                v-model="website"></v-text-field>
-              <v-text-field
-                label="Legal Mobile/Phone*"
-                persistent-hint
-                v-model="mobile"
-                required
-                :rules="[() => email.trim().length > 0 || 'This field is required']"></v-text-field>
-                <v-layout row>
-                  <v-flex xs12>
-                    <v-text-field
-                      name="input-1"
-                      v-model="description"
-                      label="Description"
-                      textarea
-                    ></v-text-field>
-                  </v-flex>
-                </v-layout>
-              <v-layout row wrap>
-                <v-flex md12 xs12>
-                  <span class="subheader">Select address of the place*</span>
-                </v-flex>
-                <v-flex md6>
-                  <vuetify-google-autocomplete
-                    id="map"
-                    append-icon="search"
-                    solo inverted light
-                    types='establishment'
-                    placeholder="Search Address"
-                    v-on:placechanged="getAddressData"
-                    country="in">
-                  </vuetify-google-autocomplete>
-                </v-flex>
-                <v-flex md6 v-if="!loadingLocation">
-                  <v-btn class="justify-center" color="success" @click.stop="fetchUserLocation">Enable Location & Start</v-btn>
-                </v-flex>
-                <v-flex v-if="loadingLocation" xs6 sm6 class="text-xs-center mt-1">
-                  <v-progress-circular
-                    indeterminate
-                    class="accent--text"
-                    :width="3"
-                    :size="30"
-                  ></v-progress-circular>
-                  <p>Fetching Location</p>
-                </v-flex>
-                <v-flex xs12 >
-                  <v-alert type="error" :value="locationError">
-                    {{locationErrorText}}
-                  </v-alert>
-                </v-flex>
-              </v-layout>
-              <Address :location="location"></Address>
-              <small>*indicates required field</small>
-            </v-card-text>
+            <Description
+              :school-name="schoolName" @change-schoolName="schoolName = $event"
+              :mobile="mobile" @change-mobile="mobile = $event"
+              :email="email" @change-email="email = $event"
+              :website="website" @change-website="website = $event"
+              :description="description" @change-description="description = $event"></Description>
+            <AddressWithFetch
+              :location="location"
+              @change-location="location = $event"></AddressWithFetch>
           </v-card>
           <v-btn color="primary" @click="validation">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -246,16 +175,18 @@
 <script>
 import db from "../../components/firebaseInit";
 import VuetifyGoogleAutocomplete from "vuetify-google-autocomplete";
-import Geohash from "latlon-geohash";
-import LocationUtil from "../../utils/LocationUtil";
 import Address from "./Address";
 import firebase from "firebase";
 import SchoolUtil from "../../utils/SchoolUtil";
 import Util from "../../utils/Util";
+import SchoolFormValidation from "../../utils/SchoolFormValidation";
+import CategoriesAndGender from "../formUtil/CategoriesAndGender";
+import Description from "../formUtil/Description";
+import AddressWithFetch from "../formUtil/AddressWithFetch";
 
 export default {
   name: "SchoolForm",
-  components: { Address, VuetifyGoogleAutocomplete },
+  components: {AddressWithFetch, Description, CategoriesAndGender, Address, VuetifyGoogleAutocomplete },
   data() {
     return {
       schoolForm: 1,
@@ -310,83 +241,9 @@ export default {
      * After fetching the location it store location in the location variable
      */
     getAddressData: function(addressData, placeResultData) {
-      const location = LocationUtil.deduceLocation(placeResultData);
-      location.latitude = addressData.latitude;
-      location.longitude = addressData.longitude;
-      location.geohash150 = Geohash.encode(
-        addressData.latitude,
-        addressData.longitude,
-        3
-      );
-      location.geohash50 = Geohash.encode(
-        addressData.latitude,
-        addressData.longitude,
-        4
-      );
-      location.geohash5 = Geohash.encode(
-        addressData.latitude,
-        addressData.longitude,
-        5
-      );
-      location.geohash1 = Geohash.encode(
-        addressData.latitude,
-        addressData.longitude,
-        6
-      );
-      this.location = location;
+      this.location = SchoolFormValidation.getAddressData(addressData, placeResultData);
       this.loadingLocation = false;
       this.locationError = false;
-    },
-    extractGeoHasH: function (geocoder, latlng, position, geohash150, geohash50, geohash5, geohash1) {
-      geocoder.geocode({location: latlng}, (results, status) => {
-        if (status === "OK") {
-          if (results[0]) {
-            let location = LocationUtil.deduceLocation(results[0]);
-            location.latitude = position.coords.latitude;
-            location.longitude = position.coords.longitude;
-            location.geohash150 = geohash150;
-            location.geohash50 = geohash50;
-            location.geohash5 = geohash5;
-            location.geohash1 = geohash1;
-            this.location = location;
-          } else {
-            this.loadingLocation = false;
-            this.locationErrorText = "No results found";
-            this.locationError = true;
-          }
-        } else {
-          this.locationErrorText = "Geocoder failed due to: " + status;
-          this.locationError = true;
-        }
-      });
-    },
-    summarizeLocation: function (position) {
-      const geohash150 = Geohash.encode(
-        position.coords.latitude,
-        position.coords.longitude,
-        3
-      );
-      const geohash50 = Geohash.encode(
-        position.coords.latitude,
-        position.coords.longitude,
-        4
-      );
-      const geohash5 = Geohash.encode(
-        position.coords.latitude,
-        position.coords.longitude,
-        5
-      );
-      const geohash1 = Geohash.encode(
-        position.coords.latitude,
-        position.coords.longitude,
-        6
-      );
-      const geocoder = new google.maps.Geocoder();
-      const latlng = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      this.extractGeoHasH(geocoder, latlng, position, geohash150, geohash50, geohash5, geohash1);
     },
     /**
      * Fetches user current location
@@ -402,8 +259,15 @@ export default {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           position => {
-            this.summarizeLocation(position);
-            this.loadingLocation = false;
+            SchoolFormValidation.summarizeLocation(position)
+              .then(result=>{
+                this.loadingLocation = false;
+                this.location = result.location;
+              }).catch(result=>{
+              this.loadingLocation = false;
+              this.locationErrorText = result.locationErrorText;
+              this.locationError = true;
+            });
           },
           err => {
             this.loadingLocation = false;
@@ -468,7 +332,7 @@ export default {
      */
     submitForm() {
       this.savingDialogue = true;
-      const newSchoolRef = db.collection("schools").doc();
+      const newSchoolRef = db.collection("draft_schools").doc();
       const placeType = SchoolUtil.getPlaceType(this.schoolType);
       this.coverPic.generateBlob(
         blob => {
@@ -483,103 +347,59 @@ export default {
             .then(snapshot => {
               this.saveSchool(snapshot, newSchoolRef, placeType);
             });
-        }, "image/jpeg", 0.8);
-    },
-    validateBoardAndClass: function() {
-      if (this.boards.length <= 0) {
-        this.errorText = "Please select at least one board.";
-        this.errorSnackbar = true;
-      } else if (this.classes.length <= 0) {
-        this.errorText = "Please select at least one class.";
-        this.errorSnackbar = true;
-      } else {
-        this.schoolForm = 4;
-      }
-    },
-    validateFacilityAndExtraCurricullar: function() {
-      if (this.specialFacilities.length <= 0) {
-        this.errorText = "Please select at least one special facility.";
-        this.errorSnackbar = true;
-      } else if (this.facilities.length <= 0) {
-        this.errorText = "Please select at least one facility.";
-        this.errorSnackbar = true;
-      } else if (this.extracurricular.length <= 0) {
-        this.errorText = "Please select at least one extracurricular activity.";
-        this.errorSnackbar = true;
-      } else {
-        this.schoolForm = 5;
-      }
-    },
-    validateDescription: function() {
-      if (this.schoolName.trim() === "") {
-        this.errorText = "Please enter valid educational place name.";
-        this.errorSnackbar = true;
-      } else if (this.email.trim() === "" || !Util.validateEmail(this.email)) {
-        this.errorText = "Please enter valid email.";
-        this.errorSnackbar = true;
-      } else if (
-        this.mobile.trim() === "" ||
-        !Util.validatePhoneNumber(this.mobile)
-      ) {
-        this.errorText = "Please enter valid mobile or phone number.";
-        this.errorSnackbar = true;
-      } else if (this.website.trim() !== "" && !Util.isUrl(this.website)) {
-        this.errorText = "Please enter valid website.";
-        this.errorSnackbar = true;
-      } else if (
-        this.description.trim() === "" ||
-        this.description.trim().length < 100
-      ) {
-        this.errorText =
-          "Description should be more than 100 characters. It helps in better user experience.";
-        this.errorSnackbar = true;
-      } else if (
-        this.location === null ||
-        this.location.formatted_address.trim() === ""
-      ) {
-        this.errorText =
-          "Please select address for this place either " +
-          "by searching the address or by using current location";
-        this.errorSnackbar = true;
-      } else {
-        this.schoolForm = 3;
-      }
-    },
-    validateTypeAndGender: function() {
-      if (this.schoolType.length <= 0) {
-        this.errorText = "Please select at least one type.";
-        this.errorSnackbar = true;
-      } else if (this.genderList.length <= 0) {
-        this.errorText = "Please select at least one from gender list.";
-        this.errorSnackbar = true;
-      } else {
-        this.schoolForm = 2;
-      }
-    },
-    validateCoverPicAndSubmit: function() {
-      if (
-        this.coverPic.getChosenFile() === null ||
-        this.coverPic.getChosenFile() === undefined
-      ) {
-        this.errorText = "Please select cover pic for the educational place.";
-        this.errorSnackbar = true;
-      } else {
-        this.submitForm();
-      }
+        }, "image/jpeg", 1);
     },
     validation() {
       this.errorText = null;
       this.errorSnackbar = false;
       if (this.schoolForm === 1) {
-        this.validateTypeAndGender();
+        const result = SchoolFormValidation.validateTypeAndGender(this.schoolType,this.genderList);
+        if (result.valid) {
+          this.schoolForm = 2;
+        }else {
+          this.errorText = result.errorText;
+          this.errorSnackbar = result.errorSnackbar;
+        }
       } else if (this.schoolForm === 2) {
-        this.validateDescription();
+        const result = SchoolFormValidation.validateDescription(
+          this.schoolName,
+          this.email,
+          this.mobile,
+          this.website,
+          this.description,
+          this.location
+        );
+        if (result.valid) {
+          this.schoolForm = 3;
+        }else {
+          this.errorText = result.errorText;
+          this.errorSnackbar = result.errorSnackbar;
+        }
       } else if (this.schoolForm === 3) {
-        this.validateBoardAndClass();
+        const result = SchoolFormValidation.validateBoardAndClass(this.boards,this.classes);
+        if (result.valid) {
+          this.schoolForm = 4;
+        }else {
+          this.errorText = result.errorText;
+          this.errorSnackbar = result.errorSnackbar;
+        }
       } else if (this.schoolForm === 4) {
-        this.validateFacilityAndExtraCurricullar();
+        const result = SchoolFormValidation.validateFacilityAndExtraCurricullar(
+          this.specialFacilities,this.facilities,this.extracurricular);
+        if (result.valid) {
+          this.schoolForm = 4;
+        }else {
+          this.errorText = result.errorText;
+          this.errorSnackbar = result.errorSnackbar;
+        }
       } else if (this.schoolForm === 5) {
-        this.validateCoverPicAndSubmit();
+        const result = SchoolFormValidation.validateCoverPicAndSubmit(this.coverPic);
+        if (result.valid) {
+          this.submitForm();
+        }else {
+          this.errorText = result.errorText;
+          this.errorSnackbar = result.errorSnackbar;
+        }
       }
     }
   }

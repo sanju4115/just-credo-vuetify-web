@@ -31,6 +31,7 @@ export default {
     },
     findSchool({ commit }, payload) {
       return new Promise((resolve, reject) => {
+        console.log(payload)
         commit("setLoading", true);
         db.collection("schools")
           .doc(payload.id)

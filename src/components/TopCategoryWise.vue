@@ -1,7 +1,7 @@
 <template>
   <v-container fluid grid-list-sm class="justify-center">
     <v-subheader
-      class="background--text subheading accent mb-5" style="width: fit-content"
+      class="colorPrimaryText--text subheading primary mb-5" style="width: fit-content"
       v-if="heading" >Top {{category.name}} <v-icon dark class="ml-2">keyboard_arrow_right</v-icon></v-subheader>
     <v-layout style="width: 100%" v-if="loading">
       <v-flex xs12 class="text-xs-center">
@@ -14,7 +14,7 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-flex style="cursor: pointer;" xs6 sm4 md3 v-for="school in schools" :key="school.key" @click="onClickSchool(school.key)">
+      <v-flex style="cursor: pointer;" xs6 sm4 md3 v-for="school in schools" :key="school.id" @click="onClickSchool(school.id)">
         <School :school="school"></School>
       </v-flex>
     </v-layout>
@@ -67,7 +67,7 @@ export default {
       })
       .catch(error => {
         this.loading = false;
-        console.log("Error getting documents: ", error);
+        console.log("TopCategoryWise create Error getting documents: ", error);
       });
   },
   methods: {

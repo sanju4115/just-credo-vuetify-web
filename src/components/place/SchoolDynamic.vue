@@ -1,12 +1,12 @@
 <template>
   <v-layout fill-height justify-center align-center>
-    <v-card hover color="background white--text" class="ma-1" v-if="school">
+    <v-card hover class="ma-1" v-if="school">
       <v-card-media
       height="125px"
       :src="school.coverPic">
       </v-card-media>
       <v-card-title primary-title>
-        <div class="truncate colorPrimaryText--text">
+        <div class="truncate primary--text">
           <span>{{school.name}}</span><br>
           <span class="colorSecondaryText--text" style="color: black">{{school.location.formatted_address}}</span>
         </div>
@@ -52,7 +52,6 @@
           }
         }
         this.school = school;
-
       }
     },
     computed: {

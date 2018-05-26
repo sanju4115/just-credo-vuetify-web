@@ -1,35 +1,16 @@
 <template>
   <v-card class="justify-center grey lighten-3">
-    <v-parallax src="static/images/banners/female_student_studying_in_library.jpg"
-                height="550" style="margin-top: -64px" class=" secondary">
-      <div class="homebanner">
-        <v-layout row wrap fill-height align-center class="pa-5 text-xs-center text-md-left text-sm-left">
-          <v-flex xs12>
-            <v-layout align-center fill-height row wrap class="pa-5">
-              <v-flex xs12 md10 sm10><h3 class="welcome">Manage Your Profile Here !</h3></v-flex>
-              <v-flex xs12 md8 sm8>
-                <span><p>We are transforming the way end users and educational institute used
-                   <br/>to interact with each other by creating a
-              digital ecosystem where they can interact with each other directly.</p></span>
-              </v-flex>
-              <v-flex xs12>
-                <!--<div><h2>Next Generation Educational Networking</h2></div><br/>-->
-                <!--<v-btn-->
-                  <!--@click="scrollFunc()"-->
-                  <!--large-->
-                  <!--color="accent"-->
-                  <!--class="mx-0">Start Experience</v-btn>-->
-              </v-flex>
-            </v-layout>
-          </v-flex>
-        </v-layout>
+    <v-container class="black lighten-1 colorPrimaryText--text" fluid>
+      <div class="ml-5">
+        <h3 class="welcome mt-3 pa-1 mb-1">{{currentUser.name}}</h3>
+        <h3 class="welcome pa-1">Edit Your Profile Here !</h3>
       </div>
-    </v-parallax>
-    <v-container style="margin-top: -10%">
+    </v-container>
+    <v-container >
       <v-layout row wrap>
         <v-flex xs12 md4 sm12 pa-1>
           <v-card>
-            <v-layout style="height: 10px" class="accent">
+            <v-layout style="height: 10px" class="background">
               <div><br/></div>
             </v-layout>
             <v-card-media :src="profilePic" height="400px" >
@@ -53,7 +34,7 @@
         </v-flex>
         <v-flex xs12 md8 sm12 pa-1>
           <v-tabs
-            color="accent"
+            color="background"
             dark
             show-arrows>
             <v-tabs-slider color="background"></v-tabs-slider>
@@ -152,12 +133,9 @@
   .welcome {
     font-family: "Roboto", sans-serif;
     font-weight: 800;
-    line-height: 48px;
-    margin-bottom: 2%;
-    font-size: 43px;
-    /*position: relative;*/
-    /*white-space: nowrap;*/
-    /*animation: floatText 1s alternate ease-in-out;*/
+    line-height: 3vh;
+    font-size: 3vh;
+    color: white;
   }
 
   .homebanner span {

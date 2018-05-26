@@ -1,7 +1,7 @@
 <template>
   <v-container fluid grid-list-sm class="justify-center">
-    <v-subheader style="height: 40px"
-                 class="light-green darken-1 background--text"
+    <v-subheader style="height: 5.7vh;"
+                 class="indicatorColor colorPrimaryText--text justify-center"
                  v-if="heading" >{{category.name}}</v-subheader>
     <v-layout style="width: 100%" v-if="loading">
       <v-flex xs12 class="text-xs-center">
@@ -14,7 +14,7 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-flex style="cursor: pointer;" sm3 md6 v-for="school in schools" :key="school.key" @click="onClickSchool(school.key)">
+      <v-flex style="cursor: pointer;" sm3 md6 v-for="school in schools" :key="school.id" @click="onClickSchool(school.id)">
         <School :school="school"></School>
       </v-flex>
     </v-layout>

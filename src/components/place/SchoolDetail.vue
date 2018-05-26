@@ -1,6 +1,25 @@
 <template>
-  <v-card flat class="elevation-24">
-    <v-container>
+  <v-container pa-0>
+    <v-layout style="width: 100%" v-if="loading">
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular
+          indeterminate
+          class="accent--text"
+          :width="3"
+          :size="30"
+        ></v-progress-circular>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap v-else>
+      <v-flex xs12 md12 sm12>
+        <v-carousel hide-delimiters dark style="height: 400px">
+          <v-carousel-item
+            v-for="(item,i) in Object.values(model.images)"
+            :src="item" :key="i"></v-carousel-item>
+        </v-carousel>
+      </v-flex>
+    </v-layout>
+    <v-container v-if="!loading">
       <v-layout row wrap>
         <v-flex xs12>
           <v-card class="elevation-0">
@@ -10,7 +29,7 @@
                 <span class="grey--text">{{model.location.formatted_address}}</span>
               </div>
               <v-spacer></v-spacer>
-              <v-chip disabled color="green" text-color="white">
+              <v-chip disabled color="background" text-color="white">
                 <v-avatar>
                   <v-icon>check_circle</v-icon>
                 </v-avatar>
@@ -21,7 +40,7 @@
               <v-btn flat color="colorPrimaryText">Share</v-btn>
               <v-btn flat color="purple">Explore</v-btn>
               <v-spacer></v-spacer>
-              <v-btn icon @click.native="show = !show" color="accent">
+              <v-btn icon dark @click.native="show = !show" color="background">
                 <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
               </v-btn>
             </v-card-actions>
@@ -38,8 +57,8 @@
             <v-container v-if="model.noOfRating !== 0 && model.noOfRating !== null && model.noOfRating !== undefined">
               <v-layout row>
                 <v-flex sm2 class="mr-2">
-                  <v-chip disabled color="accent" text-color="white" >
-                    {{model.rating}}
+                  <v-chip disabled color="background" text-color="white" >
+                    {{model.rating}} Rating
                     <v-icon right small>star</v-icon>
                   </v-chip>
                 </v-flex>
@@ -58,7 +77,7 @@
                     <img src="/static/apple-touch-icon-180x180.png" alt="avatar">
                   </v-avatar>
                 </v-flex>
-                <v-flex sm11 xs8>
+                <v-flex sm9 xs8>
                   <v-container>
                     <v-flex class="review">
                       <div>Sanjay Kumar reviewed it.</div>
@@ -115,16 +134,36 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </v-card>
+  </v-container>
+
 </template>
 
 <script>
 export default {
   name: "SchoolDetail",
-  props: ["model"],
   data: () => ({
-    show: false
-  })
+    show: false,
+    model:null,
+    loading:true
+  }),
+  created(){
+    const id = this.$route.params.id;
+    const school = this.$store.getters.school(id);
+    if (school === undefined || school === null) {
+      this.$store.dispatch("findSchool", { id: id }) //find and storing school to the store
+        .then(response => {
+          this.model = response.data;
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+          console.error(error);
+          //this.$router.push(`/error?error=${error}`);
+        });
+    }else {
+      this.model = school;
+      this.loading = false;
+    }
+  }
 };
 </script>
 

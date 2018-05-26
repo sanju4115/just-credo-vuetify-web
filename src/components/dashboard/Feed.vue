@@ -13,7 +13,6 @@
         </v-flex>
       </v-layout>
     </v-parallax>
-
     <v-container>
      <v-layout row wrap>
        <v-flex xs12>
@@ -92,7 +91,7 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex xs12 md4 sm12 id="sponsored" v-scroll="onScroll" class="pl-3">
+      <v-flex xs12 md4 sm12 id="sponsored" class="pl-3">
         <Sponsored :category="category"></Sponsored>
       </v-flex>
     </v-layout>

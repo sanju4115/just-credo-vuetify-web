@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer
       v-bind:class="{navigationBar:$vuetify.breakpoint.lgAndUp}"
-       class="background"
+       class="indicatorColor"
        dark v-if="userIsAuthenticated"
        fixed
        :clipped="$vuetify.breakpoint.lgAndUp"
@@ -77,17 +77,27 @@
         label="Search"
         class="hidden-sm-and-down ml-5"></v-text-field>
       <v-spacer></v-spacer>
+      <v-toolbar-items
+        v-if="!userIsAuthenticated"
+        class="hidden-sm-and-down">
+        <v-btn flat @click="scrollToServices()">Services</v-btn>
+        <v-btn flat @click="scrollToFeatures()">Features</v-btn>
+        <v-btn flat @click="scrollToContents()">Contents</v-btn>
+        <v-btn flat @click="scrollToPartners()">Partners</v-btn>
+        <v-btn flat @click="scrollToMission()">Mission</v-btn>
+      </v-toolbar-items>
       <v-btn
         v-if="!userIsAuthenticated"
         type="submit"
-        color="primary"
+        color="red"
         @click.stop="dialog = !dialog">
         Login
       </v-btn>
       <app-profile-menu v-if="userIsAuthenticated"></app-profile-menu>
     </v-toolbar>
-    <v-content>
+    <v-content class="grey lighten-3">
       <router-view></router-view>
+      <vue-snotify></vue-snotify>
     </v-content>
     <v-dialog v-model="dialog" width="500px">
       <v-tabs
@@ -313,6 +323,16 @@ export default {
             link: "/profile"
           },
           {
+            icon: "border_color",
+            text: "Edit Profile",
+            link: "/editProfile"
+          },
+          {
+            icon: "dashboard",
+            text: "Admin",
+            link: "/adminDashboard"
+          },
+          {
             icon: "keyboard_arrow_up",
             "icon-alt": "keyboard_arrow_down",
             text: "Add Place",
@@ -433,6 +453,21 @@ export default {
     snackbarText: null
   }),
   methods: {
+    scrollToFeatures :function(){
+      this.$SmoothScroll(document.getElementById('features'));
+    },
+    scrollToServices :function(){
+      this.$SmoothScroll(document.getElementById('services'));
+    },
+    scrollToContents :function(){
+      this.$SmoothScroll(document.getElementById('contents'));
+    },
+    scrollToPartners :function(){
+      this.$SmoothScroll(document.getElementById('partners'));
+    },
+    scrollToMission :function(){
+      this.$SmoothScroll(document.getElementById('mission'));
+    },
     onScroll () {
       this.isScrolling = (window.pageYOffset ||
         document.documentElement.scrollTop || 0) > 100
@@ -458,6 +493,17 @@ export default {
   },
   props: {
     source: String
+  },
+  created(){
+    firebase.messaging().onMessage(payload => {
+      console.log(payload);
+      this.$snotify.info(payload.notification.body, payload.notification.title, {
+        timeout: 2000,
+        showProgressBar: true,
+        closeOnClick: true,
+        icon: payload.notification.icon
+      });
+    });
   }
 };
 </script>

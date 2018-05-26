@@ -7,7 +7,8 @@ export default {
     user: null,
     loading: false,
     error: null,
-    areaSelected:"geohash50"
+    areaSelected:"geohash50",
+    isUserAdmin:false
   },
   mutations: {
     setUser(state, payload) {
@@ -17,17 +18,17 @@ export default {
         const docRef = db.collection("users").doc(payload.uid);
         docRef.get().then(doc => {
           if (doc.exists) {
-            console.log("User exist in db");
-            console.log(doc.data());
             state.user = doc.data();
           }else {
-            console.log("User does not exist in db");
             //handleLocationError(false);
           }
         }).catch(function(error) {
-          console.log("Error getting document:", error);
+          console.log("Shared index.js setUser error getting document:", error);
         });
       }
+    },
+    setUpdatedUser(state, payload){
+      state.user = payload.data;
     },
     setLoading(state, payload) {
       state.loading = payload;
@@ -43,6 +44,17 @@ export default {
     },
     clearUser(state){
       state.user = null;
+    },
+    setIsUserAdmin(state,payload){
+      const docRef = db.collection("roles").doc(payload.uid);
+      docRef.get().then(doc => {
+        console.log("roles");
+        state.isUserAdmin = doc.exists;
+        console.log(state.isUserAdmin);
+      }).catch((err) => {
+        console.log('Share/index.js setIsUserAdmin error getting documents', err);
+        handleLocationError(false);
+      });
     }
   },
   actions: {
@@ -58,6 +70,12 @@ export default {
     },
     clearUser({ commit }){
       commit("clearUser");
+    },
+    setUser({ commit}, payload){
+      commit("setUpdatedUser",payload);
+    },
+    setIsUserAdmin({ commit},payload){
+      commit("setIsUserAdmin",payload);
     }
   },
   getters: {
@@ -72,6 +90,9 @@ export default {
     },
     areaSelected(state){
       return state.areaSelected;
+    },
+    isUserAdmin(state){
+      return state.isUserAdmin;
     }
   }
 };

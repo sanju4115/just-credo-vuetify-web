@@ -12,7 +12,7 @@
         </v-flex>
       </v-layout>
       <v-layout row wrap>
-        <v-flex xs6 sm4 md3 v-for="school in schools" :key="school.key" @click="onClickSchool(school.key)">
+        <v-flex xs6 sm4 md3 v-for="school in schools" :key="school.id" @click="onClickSchool(school.id)">
           <School :school="school"></School>
         </v-flex>
       </v-layout>
@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     onClickSchool(id) {
-      this.$router.push("/place/schoolHome/" + id);
+      this.$router.push("/placeAdmin/" + id);
     }
   }
 };

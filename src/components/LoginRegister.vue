@@ -1,21 +1,21 @@
 <template>
   <v-card class="justify-center secondary" fill-height>
     <v-parallax src="/static/images/banners/summer-homepage-banner.jpg"
-                height="550" class="secondary">
+                style="height: 60vh" class="secondary">
       <div :class="{'homebanner': $vuetify.breakpoint.smAndDown,'animatedParent':$vuetify.breakpoint.mdAndUp}">
         <v-layout row wrap class="pa-3 text-xs-center justify-center animated fadeInDown">
           <v-flex xs12>
             <v-layout align-center fill-height row wrap class="pa-3 mt-3 justify-center">
-              <v-flex xs6 >
+              <v-flex xs8 md6 >
                   <div :class="{'slanted1': $vuetify.breakpoint.mdAndUp}">
                     <div>
-                      <h3 class="welcome" style="padding-top:  20px">Welcome to JustCredo !</h3>
+                      <h3 class="welcome" style="padding-top: 3vh">Welcome to JustCredo !</h3>
                     </div>
                   </div>
               </v-flex>
             </v-layout>
           </v-flex>
-          <v-flex xs12 sm6>
+          <v-flex xs12 sm8 md6>
             <div :class="{'slanted3': $vuetify.breakpoint.mdAndUp}">
               <p class="welcomeP">Create
                 <span class="typewrite"
@@ -32,7 +32,8 @@
             </div>
             <v-btn large
                    @click="scrollFunc()"
-                   color="accent"
+                   dark
+                   color="green darken-2"
                    class="mt-4">
               Know More</v-btn>
           </v-flex>
@@ -42,16 +43,16 @@
     <v-container class="blue colorPrimaryText--text text-xs-center" fluid>
       <div class="animatedParent" data-appear-top-offset='-300'>
         <div class='animated bounceInRight'>
-          <p style="font-weight: bold">We are transforming the way end users and educational institute used
+          <p style="font-weight: bold;font-size: 2vh">We are transforming the way end users and educational institute used
             to interact with each other by creating a
             digital ecosystem where they can interact with each other directly.</p>
         </div>
       </div>
     </v-container>
 
-    <v-card fluid>
-      <v-layout row wrap class="text-xs-center justify-center">
-        <v-flex xs12 class="justify-center">
+    <v-card fluid id="services">
+      <v-layout row wrap class="justify-center">
+        <v-flex xs12 class="justify-center fadeInCustom">
           <v-layout class="vd_visitor-counter justify-center mt-5">
             <div class="item-row">
               <div class="item  vd_green hidden-sm-and-down">
@@ -85,7 +86,7 @@
           </v-layout>
         </v-flex>
         <v-flex xs12 mb-5>
-          <div class="text-center visitor-word appear">
+          <div class="text-center visitor-word appear text-xs-center">
             <h2>Registered Educational Places and Still Counting...</h2>
           </div>
         </v-flex>
@@ -93,22 +94,22 @@
           <v-card class="align-center" hover>
             <v-card-media :src="featureBox.image" height="300" >
             </v-card-media>
-            <v-card-title primary-title  class="justify-center text-xs-center align-center">
+            <v-card-title primary-title  class="justify-center align-center">
               <div>
-                <h3 class="headline mb-0">{{featureBox.name}}</h3>
-                <div class="mt-3" style="height: 20vh">{{featureBox.desc}}</div>
+                <h3 class="headline mb-0 text-xs-center">{{featureBox.name}}</h3>
+                <div class="mt-3 text-xs-center" style="height: 20vh;font-size: 2vh">{{featureBox.desc}}</div>
               </div>
             </v-card-title>
           </v-card>
         </v-flex>
       </v-layout>
     </v-card>
-    <v-parallax src="/static/images/banners/istock-499343530.jpg"
-                height="480" class="secondary">
+    <v-parallax id="features" src="/static/images/banners/istock-499343530.jpg"
+                height="480" class="secondary fadeInCustom">
       <div style="background: rgba(0, 0, 0, 0.5)">
         <v-layout row wrap class="pa-3 text-xs-center justify-center">
           <v-flex xs12>
-            <v-layout align-center fill-height row wrap class="pa-3 mt-3 justify-center">
+            <v-layout align-center fill-height row wrap class="pa-3 mt-3 justify-center fadeInCustom">
               <v-flex xs6 >
                 <div>
                   <div>
@@ -140,13 +141,13 @@
         </v-flex>
         <v-flex md4 sm12>
           <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
-            <div class="features1-content left">
+            <div class="features1-content left feature">
               <v-icon>touch_app</v-icon>
               <h4>Easy To Use</h4>
               <p>Just download the application and sign up or sign in through gmail and start exploring nearby schools,
                 coaching, music classes, sports classes, art classes and private/home tutors very easily.</p>
             </div>
-            <div class="features1-content left">
+            <div class="features1-content left feature">
               <v-icon>chrome_reader_mode</v-icon>
               <h4>Browse Details</h4>
               <p>Users can browse all the details like classes and boards available, facilities and extracurricular activities
@@ -155,14 +156,14 @@
             </div>
           </v-card>
         </v-flex>
-        <v-flex md4 sm12>
+        <v-flex md4 sm12 class="fadeInCustom">
           <v-card dark hover class="transparent elevation-24 pa-5  mt-5">
             <v-container>
               <v-layout class="justify-center fill-height">
                 <!--<img class="img-responsive" src="/static/images/school_home_mobile.png">-->
-                <div align="center" style="height: 60vh">
+                <div align="center" style="height: 50vh">
                   <h2 class="section-title colorPrimaryText--text">Single Point Of Contact For People Related With <br><span>Educational Networking</span> in any way.</h2>
-                  <p class="section-intro colorPrimaryText--text mt-5">
+                  <p class="section-intro colorPrimaryText--text mt-5" style="font-size: 2vh">
                     JustCredo is helping people in digitally advertising all the educational institutes. People can add their places profile very easily. The new generation Educational Networking app.
                   </p>
                 </div>
@@ -172,13 +173,13 @@
         </v-flex>
         <v-flex md4 sm12>
           <v-card dark class="transparent featureBox colorPrimaryText--text elevation-0">
-            <div class="features1-content right">
+            <div class="features1-content right feature">
               <v-icon>bookmark</v-icon>
               <h4>Bookmarking</h4>
               <p>You can see the up to date details, browse images, read blogs/reviews, get the contact details and you can bookmark
                 it so that you can compare them later. You can find bookmarked places in profile section of the app.</p>
             </div>
-            <div class="features1-content right">
+            <div class="features1-content right feature">
               <v-icon>receipt</v-icon>
               <h4>Read Reviews</h4>
               <p>Places can be browsed based on rating and reviews given by the end users. People can read the reviews.</p>
@@ -187,14 +188,20 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <v-jumbotron class="text-xs-center grey lighten-3" height="700">
+    <v-jumbotron id="contents" class="grey lighten-3" height="700">
       <v-container class="justify-center">
         <v-layout row wrap class="justify-center">
           <v-flex xs12 mt-3>
             <v-card class="transparent elevation-0">
-              <v-card-title class="justify-center">
-              <h3 class="welcome" style="color: #757575">Discover Educational Place on JustCredo</h3>
-              <div><h2>Next Generation Educational Networking</h2></div><br/>
+              <v-card-title class="justify-center text-xs-center">
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <h3 class="welcome" style="color: #757575">Discover Educational Place on JustCredo</h3>
+                  </v-flex xs12>
+                  <v-flex>
+                    <h2>Next Generation Educational Networking</h2>
+                  </v-flex>
+                </v-layout>
               </v-card-title>
             </v-card>
           </v-flex>
@@ -205,12 +212,12 @@
                       :autoplayTimeout=2000 :minSwipeDistance=8
                       :loop=true :paginationPadding=5>
               <slide v-for="category in categories" :key="category.name" class="pa-3">
-                <v-card class="align-center pa-3" hover>
-                  <v-card-media contain :src="category.image" height="200" >
+                <v-card class="align-center pt-4" hover>
+                  <v-card-media contain :src="category.image" height="20vh">
                   </v-card-media>
                   <v-card-title primary-title  class="justify-center text-xs-center align-center">
-                    <div>
-                      <h3 class="headline mb-0">{{category.name}}</h3>
+                    <div class="section-intro">
+                      <h3 class="mb-0">{{category.name}}</h3>
                       <div class="mt-3" style="height: 20vh">{{category.desc}}</div>
                     </div>
                   </v-card-title>
@@ -222,40 +229,42 @@
         </v-layout>
       </v-container>
     </v-jumbotron>
-    <v-layout row wrap>
-      <v-flex xs12 md6>
-        <img src="/static/images/banners/138710949-58b741915f9b5880804ff093.jpg" style="height: 500px"/>
-      </v-flex>
-      <v-flex xs6 md6>
-        <v-card dark class="featureBox colorPrimaryText--text elevation-0" style="float:right;height: 500px">
-          <div class="features2-content">
-            <h2 class="section-title">Create your advertising profile very easily by clicking on
-              <span>Add Place</span> in profile section.</h2>
-            <p>Owners of schools, coaching, music classes, sports classes, art classes and
-              private/home tutors can create their advertising profile very easily.
-              They just need to fill up a form after selecting a
-              appropriate option and their profile will be visible to the end users as soon as they save and submit it.</p>
-            <ul>
-              <li><i class="fa fa-check"></i> Profile contents can be updated at any time in future by themselves </li>
-              <li><i class="fa fa-check"></i> Mention about the facilities and key features</li>
-              <li><i class="fa fa-check"></i> Blogs can be shared, people can like and comment on it </li>
-              <li><i class="fa fa-check"></i> Pictures can be uploaded and will be visible in gallery section</li>
-              <li><i class="fa fa-check"></i> Get notified when people bookmark your advertising profile.</li>
-            </ul>
-          </div>
-        </v-card>
-      </v-flex>
-    </v-layout>
-
-    <v-jumbotron class="text-xs-center text-md-left grey lighten-3" height="700">
-      <v-container class="justify-center" fluid>
-        <v-layout row wrap class="justify-center">
-          <v-flex xs12 mt-3>
-            <v-card class="transparent elevation-0">
+    <v-card class="elevation-24">
+      <v-layout row wrap id="partners">
+        <v-flex xs12 md6>
+          <img
+            src="/static/images/banners/138710949-58b741915f9b5880804ff093.jpg"
+            style="height: 60vh;width: 100%"/>
+        </v-flex>
+        <v-flex xs6 md6>
+          <v-card dark class="featureBox colorPrimaryText--text elevation-0" style="float:right;height: 60vh">
+            <div class="features2-content pa-2">
+              <h2 class="section-title">Create your advertising profile very easily by clicking on
+                <span>Add Place</span> in profile section.</h2>
+              <p>Owners of schools, coaching, music classes, sports classes, art classes and
+                private/home tutors can create their advertising profile very easily.
+                They just need to fill up a form after selecting a
+                appropriate option and their profile will be visible to the end users as soon as they save and submit it.</p>
+              <ul class="section-title">
+                <li><i class="fa fa-check"></i> Profile contents can be updated at any time in future by themselves </li>
+                <li><i class="fa fa-check"></i> Mention about the facilities and key features</li>
+                <li><i class="fa fa-check"></i> Blogs can be shared, people can like and comment on it </li>
+                <li><i class="fa fa-check"></i> Pictures can be uploaded and will be visible in gallery section</li>
+                <li><i class="fa fa-check"></i> Get notified when people bookmark your advertising profile.</li>
+              </ul>
+            </div>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-card>
+      <v-container id="mission" class="justify-center text-xs-center text-md-left grey lighten-3" fluid>
+        <v-layout row wrap class="justify-center mt-5">
+          <v-flex xs12 mt-3 mb-5>
+            <v-card class="transparent elevation-0 slideDown">
               <v-card-title class="justify-center">
                 <div align="center">
                   <h2 class="section-title">Single Point Of Contact For People Related With <br><span>Educational Networking</span> in any way.</h2>
-                  <p class="section-intro">JustCredo's mission is to provide a educational networking platform to people
+                  <p class="section-intro pl-5 pr-5">JustCredo's mission is to provide a educational networking platform to people
                     where they can find any type of educational institute very easily through mobile application.
                     For educational institutes owner they can create profile on this application and digitally advertise themselves to the world.
                   </p>
@@ -265,7 +274,7 @@
           </v-flex>
           <v-flex xs12 md6>
             <v-card dark class="transparent featureBox background--text elevation-0 mb-5">
-              <div class="features2-content" style="height: 400px">
+              <div class="features2-content feature" style="height: 40vh">
                 <h2 class="section-title">Education is for improving the lives of others and for leaving your community
                   and world better than you found it.
                   <span></span></h2>
@@ -278,194 +287,15 @@
               </div>
             </v-card>
           </v-flex>
-          <v-flex xs12 md6 class="mb-5">
+          <v-flex xs12 md6 class="mb-5 feature">
             <v-card dark class="transparent featureBox background--text elevation-24 mb-5">
               <img
                 src="/static/images/banners/crafts-your-kids-can-do-while-you-worry-about-back-to-school.jpeg"
-              style="height: 400px">
+              style="height: 55vh;width: 100%">
             </v-card>
           </v-flex>
         </v-layout>
       </v-container>
-    </v-jumbotron>
-    <!--<v-layout id="Content" class="secondary">-->
-      <!--<v-container>-->
-        <!--<v-layout row wrap>-->
-          <!--<v-flex md5 sm12 style="margin-top: -100px" class="mb-5">-->
-            <!--<v-card dark class="transparent elevation-0">-->
-              <!--<img class="banner-img img-responsive" src="/static/images/imageedit_1_4646109201.png"/>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-          <!--<v-flex md7 sm12 class="featureBox justify-center" style="margin-top: -100px">-->
-            <!--<v-card dark class="transparent justify-center elevation-0">-->
-              <!--<div class="banner-text">-->
-                <!--<h1>Educational Networking - Find And Advertise Educational Places Here<span> Location </span> Wise</h1>-->
-                <!--<p>JustCredo is an Android Mobile App for digitally advertising all the educational institutes.-->
-                  <!--People can add their places profile very easily. The new generation Educational Networking app.</p>-->
-                <!--<div><a href="#"><img src="/static/images/apple-store-btn.png"></a> <a href="#">-->
-                  <!--<img src="/static/images/google-store-btn.png"></a> </div>-->
-              <!--</div>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-        <!--</v-layout>-->
-      <!--</v-container>-->
-    <!--</v-layout>-->
-    <!--<v-layout row wrap class="background">-->
-      <!--<v-flex md8 offset-md2 class="mt-5">-->
-        <!--<v-card dark class="transparent elevation-0 mt-5" style="margin-top: 50px ">-->
-          <!--<div align="center">-->
-            <!--<h2 class="section-title colorPrimaryText&#45;&#45;text">Single Point Of Contact For People Related With <br><span>Educational Networking</span> in any way.</h2>-->
-            <!--<p class="section-intro colorPrimaryText&#45;&#45;text">JustCredo's mission is to provide a educational networking platform to people-->
-              <!--where they can find any type of educational institute very easily through mobile aplication.-->
-              <!--For educational institutes owner they can create profile on this application and digitally advertise themselves to the world.-->
-            <!--</p>-->
-          <!--</div>-->
-        <!--</v-card>-->
-      <!--</v-flex>-->
-      <!--<v-flex md12 xs12 offset-2 class="text-xs-center justify-center">-->
-        <!--<v-card dark class="transparent elevation-0">-->
-          <!--<div class="overview-video">-->
-            <!--<iframe-->
-              <!--style="max-width: 100%; max-height: 100%;"-->
-              <!--src="https://www.youtube.com/embed/Kl7F-SSniSI?autoplay=0"-->
-              <!--frameborder="0" > </iframe>-->
-          <!--</div>-->
-        <!--</v-card>-->
-      <!--</v-flex>-->
-      <!--<v-container>-->
-        <!--<v-layout row wrap>-->
-          <!--<v-flex md4 sm12>-->
-            <!--<v-card dark class="transparent featureBox colorPrimaryText&#45;&#45;text elevation-0">-->
-              <!--<div class="overview-content">-->
-                <!--<v-icon class="mb-2" color="colorPrimaryText">rss_feed</v-icon>-->
-                <!--<h4>Live Feeds And Blogs</h4>-->
-                <!--<p>Get the live updates of the educational places in your city at every second. You can see rating/reviews shared by people about the educational places-->
-                  <!--and read the blogs shared by the educational places about any event happening within their premises.-->
-                <!--</p>-->
-              <!--</div>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-          <!--<v-flex md4 sm12>-->
-            <!--<v-card dark class="transparent featureBox colorPrimaryText&#45;&#45;text elevation-0">-->
-              <!--<div class="overview-content">-->
-                <!--<v-icon class="mb-2" color="colorPrimaryText">speaker_notes</v-icon>-->
-                <!--<div>-->
-                  <!--<h4>Notifications</h4>-->
-                  <!--<p>You can bookmark places and get notified whenever anything shared by the educational places.-->
-                    <!--Notifications can be about 'Admission Opening'.-->
-                    <!--You can also follow people to get their updates.</p>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-          <!--<v-flex md4 sm12>-->
-            <!--<v-card dark class="transparent featureBox colorPrimaryText&#45;&#45;text elevation-0">-->
-              <!--<div class="overview-content">-->
-                <!--<v-icon class="mb-2" color="colorPrimaryText">location_on</v-icon>-->
-                <!--<div>-->
-                  <!--<h4>Location Wise Searching</h4>-->
-                  <!--<p>JustCredo shows contents based on the selected location or by fetching user's location automatically.-->
-                  <!--</p>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-        <!--</v-layout>-->
-      <!--</v-container>-->
-      <!--<v-container class="mt-5">-->
-        <!--<v-layout row wrap class="mt-5">-->
-          <!--<v-flex md6 mt-5>-->
-            <!--<v-card dark class="transparent featureBox elevation-0">-->
-              <!--<img class="img-responsive" style="max-width: 100%; height: auto;" src="/static/images/school_feature_screen2.png">-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-          <!--<v-flex md6>-->
-            <!--<v-card dark class="transparent featureBox colorPrimaryText&#45;&#45;text elevation-0" style="float:right;">-->
-              <!--<div class="features2-content">-->
-                <!--<h2 class="section-title">Create your advertising profile very easily by clicking on-->
-                  <!--<span>Add Place</span> in profile section.</h2>-->
-                <!--<p>Owners of schools, coaching, music classes, sports classes, art classes and-->
-                  <!--private/home tutors can create their advertising profile very easily.-->
-                  <!--They just need to fill up a form after selecting a-->
-                  <!--appropriate option and their profile will be visible to the end users as soon as they save and submit it.</p>-->
-                <!--<ul>-->
-                  <!--<li><i class="fa fa-check"></i> Profile contents can be updated at any time in future by themselves </li>-->
-                  <!--<li><i class="fa fa-check"></i> Mention about the facilities and key features</li>-->
-                  <!--<li><i class="fa fa-check"></i> Blogs can be shared, people can like and comment on it </li>-->
-                  <!--<li><i class="fa fa-check"></i> Pictures can be uploaded and will be visible in gallery section</li>-->
-                  <!--<li><i class="fa fa-check"></i> Get notified when people bookmark your advertising profile.</li>-->
-                <!--</ul>-->
-              <!--</div>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-        <!--</v-layout>-->
-      <!--</v-container>-->
-      <!--<v-container class="mt-5">-->
-        <!--<v-layout row wrap class="mt-5">-->
-          <!--<v-flex md6>-->
-            <!--<v-card dark class="transparent featureBox colorPrimaryText&#45;&#45;text elevation-0">-->
-              <!--<div class="features2-content">-->
-                <!--<h2 class="section-title">Education is for improving the lives of others and for leaving your community-->
-                  <!--and world better than you found it.-->
-                  <!--<span></span></h2>-->
-                <!--<p>JustCredo aims at providing people easy way to search for schools, coaching, music classes, sports classes,-->
-                  <!--art classes and private/home tutors, compare them by rating and reviews shared by end users.-->
-                  <!--They can browse them category wise as well as location wise.-->
-
-                <!--</p>-->
-                <!--<p>We help schools, coaching, music classes, sports classes, art classes and private/home tutors-->
-                  <!--to take digital route for advertising themselves seamlessly.</p>-->
-              <!--</div>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-          <!--<v-flex md6>-->
-            <!--<v-card dark class="transparent featureBox elevation-0">-->
-              <!--<img class="img-responsive" src="/static/images/school_feature_screen4.png">-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-        <!--</v-layout>-->
-      <!--</v-container>-->
-      <!--<v-container class="mt-5 justify-center text-xs-center">-->
-        <!--<v-layout row wrap class="mt-5">-->
-          <!--<v-flex md8 offset-md2 class="text-md-center">-->
-            <!--<v-card dark class="mt-5 transparent featureBox colorPrimaryText&#45;&#45;text elevation-0">-->
-              <!--<h2 class="section-title">JustCredo is the <span>next generation</span> educational networking</h2>-->
-              <!--<p class="section-intro">It is transforming the way end users and educational institute used to interact with each other by creating a-->
-                <!--digital ecosystem where they can interact with each other direclty. </p>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-          <!--<v-flex sm12 md12 class="justify-center text-xs-center">-->
-            <!--<v-card dark class="transparent featureBox elevation-0">-->
-              <!--<carousel :per-page="4" :autoplay=true :autoplayHoverPause=true-->
-                        <!--paginationActiveColor="#4CAF50"-->
-                        <!--:autoplayTimeout=5000 :minSwipeDistance=8-->
-                        <!--:loop=true :paginationPadding=5>-->
-                <!--<slide v-for="image in images">-->
-                  <!--<img class="img-responsive" width="90%"-->
-                       <!--height="90%" :src="image.image">-->
-                <!--</slide>-->
-              <!--</carousel>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-        <!--</v-layout>-->
-      <!--</v-container>-->
-      <!--<v-jumbotron color="grey darken-4" style="height: 100%">-->
-      <!--<v-container class="text-xs-center justify-center mb-5">-->
-        <!--<v-layout row wrap>-->
-          <!--<v-flex md8 offset-md2>-->
-            <!--<v-card dark class="mt-5 transparent featureBox subscribe background&#45;&#45;text elevation-0">-->
-              <!--<h2>Get Your Free Download Of JustCredo App <span>today!</span></h2>-->
-              <!--<p> The new generation Educational Networking app. </p>-->
-              <!--<div  class="banner-btn"> <a href="#">-->
-              <!--<img src="/static/images/apple-store-btn.png"></a> <a href="#" class="banner-btn">-->
-              <!--<img src="/static/images/google-store-btn.png"></a></div>-->
-            <!--</v-card>-->
-          <!--</v-flex>-->
-        <!--</v-layout>-->
-      <!--</v-container>-->
-      <!--</v-jumbotron>-->
-    <!--</v-layout>-->
-    <!--<v-divider class="grey darken-3" ></v-divider>-->
   </v-card>
 </template>
 
@@ -506,17 +336,17 @@ export default {
         {
           image:"static/images/school/graduate.svg",
           name:"Secondary Schools",
-          desc:"Secondary schooling system in India Secondary school education comprises of two years of lower secondary and two years of higher secondary education. The lower secondary level is for students aged 14 to 16 years. Admission requirement is the completion of upper primary school education."
+          desc:"Secondary schooling system in India Secondary school education comprises of two years of lower secondary and two years of higher secondary education. The lower secondary level is for students aged 14 to 16 years."
         },
         {
           image:"static/images/school/geography.svg",
           name:"International School",
-          desc:"An international school is a school that promotes international education, in an international environment, either by adopting a curriculum such as that of the International Baccalaureate, Edexcel or Cambridge International Examinations, or by following a national curriculum different from that of the school's country of residence."
+          desc:"An international school is a school that promotes international education, in an international environment by adopting a curriculum such as that of the International Baccalaureate, Edexcel or Cambridge International Examinations."
         },
         {
           image:"static/images/school/wheelchair.svg",
           name:"Special Schools",
-          desc:"A special school is a school catering for students who have special educational needs due to severe learning difficulties, physical disabilities or behavioural problems. Special schools may be specifically designed, staffed and resourced to provide appropriate special education for children with additional needs."
+          desc:"A special school is a school catering for students who have special educational needs due to severe learning difficulties, physical disabilities or behavioural problems."
         },
         {
           image:"static/images/school/acoustic-guitar.svg",
@@ -570,6 +400,34 @@ export default {
     jQuery(document).ready(function() {
       jQuery('.feature').addClass("hidden").viewportChecker({
         classToAdd: 'visible animated fadeInUp',
+        offset: 100
+      });
+    });
+
+    jQuery(document).ready(function() {
+      jQuery('.slideDown').addClass("hidden").viewportChecker({
+        classToAdd: 'visible animated fadeInDown',
+        offset: 100
+      });
+    });
+
+    jQuery(document).ready(function() {
+      jQuery('.fadeInCustom').addClass("hidden").viewportChecker({
+        classToAdd: 'visible animated fadeIn',
+        offset: 100
+      });
+    });
+
+    jQuery(document).ready(function() {
+      jQuery('.fadeInRight').addClass("hidden").viewportChecker({
+        classToAdd: 'visible animated fadeInRight',
+        offset: 100
+      });
+    });
+
+    jQuery(document).ready(function() {
+      jQuery('.fadeInLeft').addClass("hidden").viewportChecker({
+        classToAdd: 'visible animated fadeInLeft',
         offset: 100
       });
     });
@@ -629,9 +487,9 @@ export default {
     css.type = "text/css";
     css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff;font-family:Roboto, " +
       "                  sans-serif;font-weight: 400;\n" +
-      "                  line-height: 48px;\n" +
+      "                  line-height: 4.8vh;\n" +
       "                  margin-bottom: 2%;\n" +
-      "                  font-size: 35px;}";
+      "                  font-size: 3.5vh;}";
     document.body.appendChild(css);
 
   }
@@ -647,8 +505,7 @@ img {
 }
 
 .overview-video {
-  margin: auto;
-  margin-bottom: 7%;
+  margin: auto auto 7%;
 }
 .overview-video iframe {
   width: 800px;
@@ -708,19 +565,23 @@ ul li {
 
 .section-title {
   margin-top: 0;
-  letter-spacing: 2px;
+  letter-spacing: 0.2vh;
   font-weight: 100;
-  font-size: 30px;
+  font-size: 3vh;
 }
 .section-title span {
   font-weight: 400;
 }
+.section-title li {
+  font-weight: 400;
+  font-size: 2vh;
+}
 .section-intro {
-  margin: 5% 10% 5% 5%;
-  font-size: 14px;
-  line-height: 21px;
+  margin: 4vh 8vh 4vh 4vh;
+  font-size: 1.8vh;
+  line-height: 2.1vh;
   font-weight: 300;
-  letter-spacing: 1px;
+  letter-spacing: 0.1vh;
 }
 .icon {
   font-size: 33px;
@@ -765,16 +626,16 @@ ul li {
 }
 .features1-content h4 {
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 20px;
+  letter-spacing: 0.1vh;
+  margin-top: 2vh;
 }
 .features1-content p {
   font-family: "Roboto", sans-serif;
-  font-size: 13px;
+  font-size: 2vh;
   font-weight: 300;
-  line-height: 21px;
-  letter-spacing: 1px;
-  margin-top: 24px;
+  line-height: 2.1vh;
+  letter-spacing: 0.1vh;
+  margin-top: 2.4vh;
 }
 /* ------------------------------------------------------------------------------
       Feature 2 & 3
@@ -791,10 +652,10 @@ ul li {
 }
 .features2-content p {
   font-family: "Roboto", sans-serif;
-  font-size: 14px;
+  font-size: 2vh;
   font-weight: 300;
-  line-height: 21px;
-  letter-spacing: 1px;
+  line-height: 3vh;
+  letter-spacing: 0.2vh;
   margin-top: 7%;
 }
 .features2-content ul {
@@ -824,9 +685,9 @@ ul li {
 .welcome {
   font-family: "Roboto", sans-serif;
   font-weight: 800;
-  line-height: 48px;
-  margin-bottom: 2%;
-  font-size: 43px;
+  line-height: 4.8vh;
+  margin-bottom: 2vh;
+  font-size: 4.3vh;
   /*position: relative;*/
   /*white-space: nowrap;*/
   /*animation: floatText 1s alternate ease-in-out;*/
@@ -835,20 +696,20 @@ ul li {
 .welcomeP{
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  line-height: 48px;
-  margin-bottom: 2%;
-  font-size: 35px;
+  line-height: 4.8vh;
+  margin-bottom: 2vh;
+  font-size: 3.5vh;
 }
 
 .homebanner span {
-  letter-spacing: 1px;
-  font-size: 15px;
+  letter-spacing: 0.1vh;
+  font-size: 1.5vh;
   font-weight: 400;
 }
 .homebanner h2 {
   font-family: "Roboto", sans-serif;
-  line-height: 45px;
-  letter-spacing: 1px;
+  line-height: 4.5vh;
+  letter-spacing: 0.1vh;
   font-weight: 400;
 }
 
@@ -889,35 +750,35 @@ ul li {
 }
 
 .vd_visitor-counter .item {
-  width: 46px;
-  height: 60px;
-  line-height: 60px;
-  font-size: 46px;
-  margin-bottom: 10px;
+  width: 4.6vh;
+  height: 6vh;
+  line-height: 6vh;
+  font-size: 4.6vh;
+  margin-bottom: 1vh;
 }
 @media (max-width: 991px)
 .vd_visitor-counter .item {
-  width: 60px;
-  height: 76px;
-  line-height: 76px;
-  font-size: 56px;
+  width: 6vh;
+  height: 7.6vh;
+  line-height: 7.6vh;
+  font-size: 5.6vh;
 }
 .vd_visitor-counter .break {
-  margin-right: 25px;
+  margin-right: 2.5vh;
 }
 .vd_visitor-counter .item {
-  width: 72px;
+  width: 7.2vh;
   text-align: center;
-  font-size: 72px;
+  font-size: 7.2vh;
   font-weight: 700;
-  height: 88px;
+  height: 8.8vh;
   color: #FFF;
   display: table-cell;
   vertical-align: middle;
-  border-radius: 4px;
+  border-radius: 0.4vh;
   position: relative;
-  line-height: 88px;
-  margin-right: 5px;
+  line-height: 8.8vh;
+  margin-right: 0.5vh;
   float: left;
 }
 .vd_bg-green {
@@ -926,12 +787,12 @@ ul li {
 
 @media (max-width: 991px)
 .vd_visitor-counter .item .line {
-  width: 60px;
+  width: 6vh;
 }
 .vd_visitor-counter .item .line {
   border: 1px solid #FFF;
   position: absolute;
-  width: 72px;
+  width: 7.2vh;
   top: 50%;
 }
 
